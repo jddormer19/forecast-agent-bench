@@ -175,8 +175,10 @@ compared with an outcome. Where this section conflicts with sections 1-9, this s
 **10.1 Model and budget.**
 - Every LLM system (A1-A3, A1p-A3p, the extraction baselines and the recall probe) uses the pinned model
   `claude-haiku-5-5`, at its default effort, one run per question, at most 8 tool calls per question.
-- Exploratory size comparison (H8): `claude-opus-5-5` runs A1/A1p on 100 post-cutoff holdout questions per track
-  (stratified by station, seed 13).
+- Exploratory cost-versus-quality comparison (H8): `claude-sonnet-5-5` and `claude-opus-5-5` each run A1/A1p on
+  the same 100 post-cutoff holdout questions per track (stratified by station, seed 13) that Haiku also answers.
+  Reported as Brier score against cost per 1,000 forecasts for the three models, with the baselines as
+  reference lines.
 - Hard budget: $30 of API spend for all runs combined. The runner computes spend from the token counts the API
   returns and stops at the cap. Spending priority if the cap binds: (1) A1/A1p on the primary holdout,
   (2) A2/A3/A2p/A3p on the primary holdout, (3) extraction baselines, (4) dev runs, (5) the Opus comparison,
@@ -248,3 +250,6 @@ item 1 is replaced by this rule.
   (https://platform.claude.com/docs/en/about-claude/models/overview, read 2026-11-19) lists claude-haiku-5-5
   and claude-opus-5-5 with "Training data cutoff: Jun 2026" and "Reliable knowledge cutoff: Jun 2026".
   Primary holdout = 2026-07-01 to 2026-11-15; secondary holdout = 2026-01-01 to 2026-06-30.
+- 2026-11-19: H8 extended at the author's decision to include claude-sonnet-5-5 (same page lists its cutoff as
+  Jun 2026), giving a three-model cost-versus-quality comparison on the same questions. Budget cap unchanged
+  ($30); the comparison stays at spending priority 5. No agent had run yet.
