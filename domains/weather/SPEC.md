@@ -253,3 +253,17 @@ item 1 is replaced by this rule.
 - 2026-11-19: H8 extended at the author's decision to include claude-sonnet-5-5 (same page lists its cutoff as
   Jun 2026), giving a three-model cost-versus-quality comparison on the same questions. Budget cap unchanged
   ($30); the comparison stays at spending priority 5. No agent had run yet.
+- 2026-11-19: **leak check (10.7) failed as specified, and was corrected.** Result v1
+  (`data/weather/checks/leak_check_v1_failed.json`): temperature values crediting the latest matching run were
+  "unsafe" for 1.3-2.4% of values (GFS 2.35%, ICON 1.33%, ECMWF 2.0%) and 33% of ECMWF values matched no run.
+  Diagnosis (`domains/weather/leak_diag.py`, cached runs only): (a) values repeat across runs, so "latest
+  matching run" flags coincidences: every GFS/ICON value matched a run published >= 6 h before t, and among the
+  2,891 values matching exactly one run, the only ones younger than 24 h were ECMWF values at non-3-hourly
+  hours; (b) Open-Meteo interpolates ECMWF temperature between its 3-hourly steps, and those interpolated values
+  cannot be traced to a run (ECMWF at 00, 03, ..., 21 UTC: 100% matched, 100% with a safe run).
+  Changes: (1) ECMWF temperature is used only at 3-hourly valid times (the ECMWF forecast high is the max of
+  7 values instead of 21); (2) the pass rule becomes: >= 90% of used values matched, 100% of matched values
+  match at least one run published >= 6 h before t, and 0 values whose only match is an unsafe run.
+  Result v2 (`data/weather/checks/leak_check.json`), now including precipitation: passed for all six
+  variable/model pairs (100% matched, 100% with a safe run, 0 unique unsafe). Both changes were made before any
+  forecast was compared with any outcome.

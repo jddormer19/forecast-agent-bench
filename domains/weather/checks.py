@@ -59,9 +59,10 @@ def used_hours(sid: str, d: date, var: str) -> list[tuple[pd.Timestamp, int]]:
 
 def leak_check() -> dict:
     client = CachedClient(CACHE / "openmeteo_single", min_interval_s=1.0)
-    archived = {"temp_f": pd.read_parquet(DATA / "forecasts.parquet")}
+    from domains.weather.sources import usable_forecasts   # the same filter the baselines and tools use
+    archived = {"temp_f": usable_forecasts(pd.read_parquet(DATA / "forecasts.parquet"), "temp_f")}
     if (DATA / "precip_forecasts.parquet").exists():
-        archived["precip_in"] = pd.read_parquet(DATA / "precip_forecasts.parquet")
+        archived["precip_in"] = usable_forecasts(pd.read_parquet(DATA / "precip_forecasts.parquet"), "precip_in")
     rows = []
     for sid in CHECK_STATIONS:
         for d in CHECK_DAYS:
@@ -76,9 +77,11 @@ def leak_check() -> dict:
                             continue
                         cand = runs[(runs.valid_utc == valid) & (runs.model == m)].dropna(subset=[var])
                         hits = cand[(cand[var] - v).abs() <= TOL[var]].run
-                        latest = hits.max() if len(hits) else None   # conservative: the latest run that could match
+                        latest = hits.max() if len(hits) else None
+                        safe = [(t - h) >= SAFE_LATENCY for h in hits]
                         rows.append({"var": var, "sid": sid, "date": d, "model": m, "lead": lead,
                                      "matched": latest is not None, "unique": len(hits) == 1,
+                                     "any_safe": any(safe), "unique_unsafe": len(hits) == 1 and not safe[0],
                                      "hours_before_t": None if latest is None else (t - latest).total_seconds() / 3600})
         print(f"leak check {sid}: {client.network_calls} network calls so far")
     df = pd.DataFrame(rows)
@@ -87,9 +90,16 @@ def leak_check() -> dict:
         mt = g[g.matched]
         out[f"{var}/{m}"] = {"values": len(g), "matched": round(len(mt) / len(g), 3),
                              "unique_match": round(g.unique.mean(), 3),
-                             "min_hours_before_t": None if mt.empty else round(mt.hours_before_t.min(), 1),
-                             "unsafe_share": None if mt.empty else round((mt.hours_before_t < SAFE_LATENCY.total_seconds() / 3600).mean(), 4)}
-    passed = all(v["unsafe_share"] == 0 and v["matched"] >= 0.9 for v in out.values())
+                             "matched_with_a_safe_run": None if mt.empty else round(mt.any_safe.mean(), 4),
+                             "unique_matches_unsafe": int(g.unique_unsafe.sum()),
+                             # v1 criterion, kept for the record: credits the latest matching run, which flags
+                             # repeated values (e.g. 0.00 in precipitation) that also match older runs
+                             "v1_latest_match_unsafe_share": None if mt.empty else
+                             round((mt.hours_before_t < SAFE_LATENCY.total_seconds() / 3600).mean(), 4)}
+    # v2 criterion (SPEC change log 2026-11-19): every used value matches a run published >= 6 h before t, and no
+    # value that matches exactly one run points to an unsafe run
+    passed = all(v["matched"] >= 0.9 and v["matched_with_a_safe_run"] == 1.0 and v["unique_matches_unsafe"] == 0
+                 for v in out.values())
     result = {"passed": passed, "safe_latency_hours": SAFE_LATENCY.total_seconds() / 3600,
               "stations": CHECK_STATIONS, "days": [str(d) for d in CHECK_DAYS], "by_variable_model": out}
     (DATA / "checks").mkdir(exist_ok=True)
