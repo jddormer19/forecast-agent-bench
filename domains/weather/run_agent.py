@@ -79,6 +79,7 @@ def main():
     ap.add_argument("--model", default=PINNED_MODEL)
     ap.add_argument("--label", required=True, help="run name, e.g. pilot / dev / holdout")
     ap.add_argument("--est-cost", type=float, default=0.005, help="per-question estimate used by the budget check")
+    ap.add_argument("--concurrency", type=int, default=6)
     a = ap.parse_args()
     if not a.all and a.n is None:
         ap.error("pass --n or --all")
@@ -96,7 +97,8 @@ def main():
     intro = lambda qid: json.dumps(tb.call("get_question", qid), ensure_ascii=False)
     asyncio.run(run_questions(tb, qids, system=SYSTEM_PROMPT[a.track], model=a.model,
                               budget=Budget(RUNS / "spend.json", CAP_USD), run_label=name, out_path=out,
-                              allowed=SYSTEMS[system], est_cost_usd=a.est_cost, fallback=ssp, intro=intro))
+                              allowed=SYSTEMS[system], est_cost_usd=a.est_cost, fallback=ssp, intro=intro,
+                              concurrency=a.concurrency))
 
 
 if __name__ == "__main__":

@@ -259,6 +259,13 @@ item 1 is replaced by this rule.
   order of 10.1 is unchanged. Also from the pilot (dev questions only): the question text, station and decision
   time are given in the agent's first message instead of through a get_question tool, which the pilot called
   14 times for 10 questions. No holdout question had been run.
+- 2026-11-20: **dev runs done and holdout frozen.** A1 / A1p on 200 dev questions per track (seeds 7 / 8, dev
+  blocks 2-6 only, 0 errors): temperature agent - SSP = -0.0151 Brier (95% date-block CI -0.0364 to +0.0038);
+  precipitation +0.0046 (-0.0046 to +0.0140). SD of the paired difference 0.1297 / 0.0671, date-block design
+  effect 1.26 / 1.05. **Minimum detectable effect** for the co-primary tests on the primary holdout (Holm first
+  step, two-sided 0.025, 80% power): temperature 0.0123 (n = 1,321), precipitation 0.0059 (n = 1,271).
+  Prompts, tools and code are frozen at git tag `holdout-freeze` before any holdout question is run; the runner
+  answers 6 questions concurrently (no effect on any single answer). Run order follows 10.1.
 - 2026-11-19: **leak check (10.7) failed as specified, and was corrected.** Result v1
   (`data/weather/checks/leak_check_v1_failed.json`): temperature values crediting the latest matching run were
   "unsafe" for 1.3-2.4% of values (GFS 2.35%, ICON 1.33%, ECMWF 2.0%) and 33% of ECMWF values matched no run.

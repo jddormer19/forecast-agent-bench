@@ -8,6 +8,7 @@ total spend past the cap.
 """
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 import time
@@ -212,7 +213,7 @@ def load_env_file(path: Path) -> None:
 
 async def run_questions(toolbox: ToolBox, qids: list[str], *, system: str, model: str, budget: Budget,
                         run_label: str, out_path: Path, allowed: list[str] | None = None, effort: str = "medium",
-                        est_cost_usd: float = 0.01, fallback=None, intro=None) -> list[dict]:
+                        est_cost_usd: float = 0.01, fallback=None, intro=None, concurrency: int = 1) -> list[dict]:
     """Run the agent on each question, appending one JSON line per question to out_path.
 
     Questions already in out_path are skipped (resumable). A failed question records the error and, if given,
@@ -224,10 +225,14 @@ async def run_questions(toolbox: ToolBox, qids: list[str], *, system: str, model
     done = {json.loads(l)["qid"] for l in out_path.read_text().splitlines()} if out_path.exists() else set()
     out_path.parent.mkdir(parents=True, exist_ok=True)
     rows = []
-    for qid in qids:
-        if qid in done:
-            continue
-        budget.check(est_cost_usd)
+    sem = asyncio.Semaphore(concurrency)
+
+    async def one(qid: str):
+        async with sem:
+            budget.check(est_cost_usd * concurrency)   # leave room for the questions already in flight
+            await _one(qid)
+
+    async def _one(qid: str):
         t0 = time.time()
         row: dict[str, Any] = {"qid": qid, "model": model, "effort": effort, "run": run_label,
                                "tools": [t["name"] for t in tools]}
@@ -256,4 +261,7 @@ async def run_questions(toolbox: ToolBox, qids: list[str], *, system: str, model
         rows.append(row)
         print(json.dumps({k: row.get(k) for k in ("qid", "probability", "tool_calls", "cost_usd", "seconds", "error")}),
               flush=True)
+
+    # questions run `concurrency` at a time; a BudgetExceeded in any of them stops the run (the rest are cancelled)
+    await asyncio.gather(*(one(q) for q in qids if q not in done))
     return rows
