@@ -167,6 +167,69 @@ confirm the multi-day-accumulation flag handling; confirm the MOS 00Z publicatio
 **Data rules:** the IEM MOS archive is NWS guidance, US-government public domain, under the same IEM throttle
 (at most 1 request per second per public IP, which all of the author's machines share).
 
+## 10. Amendment A: contamination, stronger baselines, statistics, budget (2026-11-19)
+
+Adopted after an independent design review, before any agent code existed and before any forecast had been
+compared with an outcome. Where this section conflicts with sections 1-9, this section governs.
+
+**10.1 Model and budget.**
+- Every LLM system (A1-A3, A1p-A3p, the extraction baselines and the recall probe) uses the pinned model
+  `claude-haiku-5-5`, at its default effort, one run per question, at most 8 tool calls per question.
+- Exploratory size comparison (H8): `claude-opus-5-5` runs A1/A1p on 100 post-cutoff holdout questions per track
+  (stratified by station, seed 13).
+- Hard budget: $30 of API spend for all runs combined. The runner computes spend from the token counts the API
+  returns and stops at the cap. Spending priority if the cap binds: (1) A1/A1p on the primary holdout,
+  (2) A2/A3/A2p/A3p on the primary holdout, (3) extraction baselines, (4) dev runs, (5) the Opus comparison,
+  (6) the secondary holdout. Anything not run is reported as not run.
+
+**10.2 Training-data contamination.**
+- The **primary holdout** runs from the first day of the month after the pinned model's published training-data
+  cutoff to 2026-11-15, and starts no earlier than 2026-07-01. The cutoff and its source are recorded in the
+  change log before any agent run.
+- The rest of the 2026 holdout is the **secondary holdout**, reported separately.
+- **Recall probe (R):** the model with no tools, given only station, date and threshold, on 200 dev and 200
+  primary-holdout questions per track. Its Brier score on dev vs. post-cutoff shows how much it remembers.
+
+**10.3 Baselines.**
+- B2 and P2 are renamed **SSP** (simple statistical post-processing). They are not MOS, and the write-up does not
+  call them MOS.
+- **T3 (MOS-based, temperature):** logistic regression on the 00Z GFS MOS daytime maximum (`n_x`) valid for day D
+  minus the threshold. Fit on dev. Used only if the MOS archive covers at least 95% of questions.
+- **E and Ep (extraction baselines):** one model call reads the latest discussion issued at or before t and
+  returns only the high temperature it states for the station's area and the precipitation chance it states
+  (either may be null). A logistic calibration fitted on a dev sample of 1,500 questions maps these to
+  probabilities; when the value is null, SSP's probability is used. One call serves both tracks.
+- The agents' tools add the MOS values (temperature and precipitation).
+
+**10.4 Temperature questions already decided.** Temperature questions whose hourly ASOS temperatures between
+the start of the climate day and t already reach the threshold are excluded and counted, as section 9 does for
+precipitation.
+
+**10.5 Statistics.**
+- **Co-primary hypotheses:** H1 (A1 vs SSP, temperature) and H4 (A1p vs SSP, precipitation), each on all
+  questions in the primary holdout. The family-wise error rate is 0.05 with a Holm correction, using two-sided
+  bootstrap p-values.
+- All other comparisons, subsets and the secondary holdout are **exploratory**, reported with 95% intervals and
+  labeled as exploratory.
+- **Block bootstrap:** resample whole dates (all stations on a date together), 10,000 resamples. This replaces
+  the question-level bootstrap of section 6.
+- **Sample sizes:** A1-A3 and A1p-A3p run on every primary-holdout question (no subsample). The dev runs
+  (200 per track) are used to estimate the standard deviation of the paired difference; the minimum detectable
+  effect for the primary tests is computed from it and recorded before the holdout run.
+- Reported alongside Brier: the Brier skill score against climatology and the reliability / resolution
+  decomposition, overall and by station.
+
+**10.6 Run protocol.**
+- A failed question (API error, timeout, invalid output) gets SSP's probability, is still scored, and every
+  failure is counted and reported.
+- Each question logs input, output and cache tokens, cost and latency.
+
+**10.7 Leak-check rule (as implemented in `checks.py`).** For 5 stations (NYC, ORD, DEN, PHX, LAX), weekly days
+from 2026-08-03 to 2026-11-15, every archived value used is matched to the exact model runs initialized from
+12Z two days before D through 06Z on D. The check passes only if at least 90% of values match a run and every
+matched run was initialized at least 6 hours before t (taking the latest run when several match). Section 8,
+item 1 is replaced by this rule.
+
 ## Change log
 
 - 2026-11-19: frozen. (Before the freeze, section 8 was renamed from "before freezing" to "before any agent run",
@@ -176,3 +239,12 @@ confirm the multi-day-accumulation flag handling; confirm the MOS 00Z publicatio
   but no forecast had been compared with any outcome and no baseline had been fitted. Outcome data seen so
   far, all from availability checks: completeness counts per station, Seattle's share of wet days (35%), and
   a few individual days printed while testing the APIs. The temperature track (sections 1-8) is unchanged.
+- 2026-11-19 (later): added section 10 (Amendment A) after an independent design review, approved by the
+  author. Model pinned to claude-haiku-5-5 with a $30 hard cap; post-cutoff primary holdout; SSP naming;
+  MOS and extraction baselines; temperature "already decided" exclusion; co-primary H1/H4 with Holm;
+  date-block bootstrap; failure fallback; leak-check rule aligned with the code. Data state unchanged since the
+  previous entry: still no forecast compared with any outcome and no model fitted.
+- 2026-11-19: pinned model cutoff recorded (10.2). Anthropic's models overview
+  (https://platform.claude.com/docs/en/about-claude/models/overview, read 2026-11-19) lists claude-haiku-5-5
+  and claude-opus-5-5 with "Training data cutoff: Jun 2026" and "Reliable knowledge cutoff: Jun 2026".
+  Primary holdout = 2026-07-01 to 2026-11-15; secondary holdout = 2026-01-01 to 2026-06-30.
