@@ -1,0 +1,1088 @@
+{
+  "scored_at": "2026-11-20T23:18:13.450627+00:00",
+  "retry_after_crash": null,
+  "temp": {
+    "runs": {
+      "A1": {
+        "files": [
+          "holdout_temp_A1_haiku-5-5_holdout_primary.jsonl",
+          "holdout_temp_A1_haiku-5-5_holdout_secondary.jsonl"
+        ],
+        "answered": 2965,
+        "errors": 0,
+        "cost_usd": 6.5939,
+        "usd_per_1000": 2.224,
+        "median_seconds": 7.2
+      },
+      "A2": {
+        "files": [
+          "holdout_temp_A2_haiku-5-5_holdout_primary.jsonl"
+        ],
+        "answered": 1321,
+        "errors": 0,
+        "cost_usd": 2.0047,
+        "usd_per_1000": 1.518,
+        "median_seconds": 6.7
+      },
+      "A3": {
+        "files": [
+          "holdout_temp_A3_haiku-5-5_holdout_primary.jsonl"
+        ],
+        "answered": 1321,
+        "errors": 0,
+        "cost_usd": 2.8444,
+        "usd_per_1000": 2.153,
+        "median_seconds": 6.9
+      },
+      "sonnet": {
+        "files": [
+          "h8_temp_A1_sonnet-5-5_holdout_primary.jsonl"
+        ],
+        "answered": 100,
+        "errors": 0,
+        "cost_usd": 2.143,
+        "usd_per_1000": 21.43,
+        "median_seconds": 7.2
+      },
+      "opus": {
+        "files": [
+          "h8_temp_A1_opus-5-5_holdout_primary.jsonl"
+        ],
+        "answered": 100,
+        "errors": 1,
+        "cost_usd": 8.0673,
+        "usd_per_1000": 80.673,
+        "median_seconds": 13.149999999999999
+      }
+    },
+    "primary_table": [
+      {
+        "system": "climatology",
+        "n": 1321,
+        "brier": 0.2221,
+        "skill_vs_climatology": 0.0,
+        "minus_ssp": 0.149,
+        "ci95": "[+0.1372, +0.1606]"
+      },
+      {
+        "system": "vote",
+        "n": 1321,
+        "brier": 0.1119,
+        "skill_vs_climatology": 0.496,
+        "minus_ssp": 0.0387,
+        "ci95": "[+0.0302, +0.0475]"
+      },
+      {
+        "system": "ssp",
+        "n": 1321,
+        "brier": 0.0731,
+        "skill_vs_climatology": 0.671,
+        "minus_ssp": 0.0,
+        "ci95": "[+0.0000, +0.0000]"
+      },
+      {
+        "system": "mos_based",
+        "n": 1321,
+        "brier": 0.0816,
+        "skill_vs_climatology": 0.633,
+        "minus_ssp": 0.0085,
+        "ci95": "[+0.0006, +0.0165]"
+      },
+      {
+        "system": "extraction",
+        "n": 1321,
+        "brier": 0.0873,
+        "skill_vs_climatology": 0.607,
+        "minus_ssp": 0.0141,
+        "ci95": "[+0.0084, +0.0204]"
+      },
+      {
+        "system": "A1",
+        "n": 1321,
+        "brier": 0.0796,
+        "skill_vs_climatology": 0.642,
+        "minus_ssp": 0.0065,
+        "ci95": "[+0.0014, +0.0114]"
+      },
+      {
+        "system": "A2",
+        "n": 1321,
+        "brier": 0.0706,
+        "skill_vs_climatology": 0.682,
+        "minus_ssp": -0.0026,
+        "ci95": "[-0.0060, +0.0007]"
+      },
+      {
+        "system": "A3",
+        "n": 1321,
+        "brier": 0.1,
+        "skill_vs_climatology": 0.55,
+        "minus_ssp": 0.0268,
+        "ci95": "[+0.0192, +0.0344]"
+      }
+    ],
+    "secondary_table": [
+      {
+        "system": "climatology",
+        "n": 1644,
+        "brier": 0.2389,
+        "skill_vs_climatology": 0.0,
+        "minus_ssp": 0.1784,
+        "ci95": "[+0.1684, +0.1885]"
+      },
+      {
+        "system": "vote",
+        "n": 1644,
+        "brier": 0.1056,
+        "skill_vs_climatology": 0.558,
+        "minus_ssp": 0.0451,
+        "ci95": "[+0.0363, +0.0534]"
+      },
+      {
+        "system": "ssp",
+        "n": 1644,
+        "brier": 0.0605,
+        "skill_vs_climatology": 0.747,
+        "minus_ssp": 0.0,
+        "ci95": "[+0.0000, +0.0000]"
+      },
+      {
+        "system": "mos_based",
+        "n": 1644,
+        "brier": 0.071,
+        "skill_vs_climatology": 0.703,
+        "minus_ssp": 0.0105,
+        "ci95": "[+0.0038, +0.0173]"
+      },
+      {
+        "system": "extraction",
+        "n": 1644,
+        "brier": 0.078,
+        "skill_vs_climatology": 0.673,
+        "minus_ssp": 0.0175,
+        "ci95": "[+0.0113, +0.0239]"
+      },
+      {
+        "system": "A1",
+        "n": 1644,
+        "brier": 0.0633,
+        "skill_vs_climatology": 0.735,
+        "minus_ssp": 0.0028,
+        "ci95": "[-0.0008, +0.0061]"
+      }
+    ],
+    "uncertain_subset_table (SSP 0.1-0.9)": [
+      {
+        "system": "climatology",
+        "n": 445,
+        "brier": 0.2591,
+        "skill_vs_climatology": 0.0,
+        "minus_ssp": 0.0679,
+        "ci95": "[+0.0422, +0.0926]"
+      },
+      {
+        "system": "vote",
+        "n": 445,
+        "brier": 0.2423,
+        "skill_vs_climatology": 0.065,
+        "minus_ssp": 0.0511,
+        "ci95": "[+0.0283, +0.0745]"
+      },
+      {
+        "system": "ssp",
+        "n": 445,
+        "brier": 0.1912,
+        "skill_vs_climatology": 0.262,
+        "minus_ssp": 0.0,
+        "ci95": "[+0.0000, +0.0000]"
+      },
+      {
+        "system": "mos_based",
+        "n": 445,
+        "brier": 0.186,
+        "skill_vs_climatology": 0.282,
+        "minus_ssp": -0.0053,
+        "ci95": "[-0.0252, +0.0148]"
+      },
+      {
+        "system": "extraction",
+        "n": 445,
+        "brier": 0.2111,
+        "skill_vs_climatology": 0.185,
+        "minus_ssp": 0.0198,
+        "ci95": "[+0.0061, +0.0343]"
+      },
+      {
+        "system": "A1",
+        "n": 445,
+        "brier": 0.1941,
+        "skill_vs_climatology": 0.251,
+        "minus_ssp": 0.0029,
+        "ci95": "[-0.0098, +0.0160]"
+      },
+      {
+        "system": "A2",
+        "n": 445,
+        "brier": 0.1775,
+        "skill_vs_climatology": 0.315,
+        "minus_ssp": -0.0137,
+        "ci95": "[-0.0220, -0.0053]"
+      },
+      {
+        "system": "A3",
+        "n": 445,
+        "brier": 0.2058,
+        "skill_vs_climatology": 0.206,
+        "minus_ssp": 0.0146,
+        "ci95": "[-0.0034, +0.0335]"
+      }
+    ],
+    "by_station": {
+      "ATL": {
+        "test": "A1 vs SSP at ATL",
+        "a": "A1",
+        "b": "ssp",
+        "n": 136,
+        "brier_a": 0.0611,
+        "brier_b": 0.051,
+        "a_minus_b": 0.01,
+        "ci95": [
+          -0.0044,
+          0.0238
+        ],
+        "verdict": "no detectable difference"
+      },
+      "BOS": {
+        "test": "A1 vs SSP at BOS",
+        "a": "A1",
+        "b": "ssp",
+        "n": 127,
+        "brier_a": 0.067,
+        "brier_b": 0.0565,
+        "a_minus_b": 0.0105,
+        "ci95": [
+          0.0013,
+          0.0213
+        ],
+        "verdict": "b better"
+      },
+      "DEN": {
+        "test": "A1 vs SSP at DEN",
+        "a": "A1",
+        "b": "ssp",
+        "n": 135,
+        "brier_a": 0.0736,
+        "brier_b": 0.0797,
+        "a_minus_b": -0.0062,
+        "ci95": [
+          -0.024,
+          0.0096
+        ],
+        "verdict": "no detectable difference"
+      },
+      "DFW": {
+        "test": "A1 vs SSP at DFW",
+        "a": "A1",
+        "b": "ssp",
+        "n": 135,
+        "brier_a": 0.0284,
+        "brier_b": 0.0269,
+        "a_minus_b": 0.0015,
+        "ci95": [
+          -0.0037,
+          0.0061
+        ],
+        "verdict": "no detectable difference"
+      },
+      "LAX": {
+        "test": "A1 vs SSP at LAX",
+        "a": "A1",
+        "b": "ssp",
+        "n": 129,
+        "brier_a": 0.1331,
+        "brier_b": 0.0842,
+        "a_minus_b": 0.0489,
+        "ci95": [
+          0.0266,
+          0.0727
+        ],
+        "verdict": "b better"
+      },
+      "MIA": {
+        "test": "A1 vs SSP at MIA",
+        "a": "A1",
+        "b": "ssp",
+        "n": 137,
+        "brier_a": 0.0918,
+        "brier_b": 0.0836,
+        "a_minus_b": 0.0082,
+        "ci95": [
+          -0.0052,
+          0.0205
+        ],
+        "verdict": "no detectable difference"
+      },
+      "NYC": {
+        "test": "A1 vs SSP at NYC",
+        "a": "A1",
+        "b": "ssp",
+        "n": 127,
+        "brier_a": 0.0803,
+        "brier_b": 0.0879,
+        "a_minus_b": -0.0076,
+        "ci95": [
+          -0.0207,
+          0.0051
+        ],
+        "verdict": "no detectable difference"
+      },
+      "ORD": {
+        "test": "A1 vs SSP at ORD",
+        "a": "A1",
+        "b": "ssp",
+        "n": 125,
+        "brier_a": 0.0839,
+        "brier_b": 0.0916,
+        "a_minus_b": -0.0077,
+        "ci95": [
+          -0.0257,
+          0.0085
+        ],
+        "verdict": "no detectable difference"
+      },
+      "PHX": {
+        "test": "A1 vs SSP at PHX",
+        "a": "A1",
+        "b": "ssp",
+        "n": 138,
+        "brier_a": 0.0725,
+        "brier_b": 0.0661,
+        "a_minus_b": 0.0064,
+        "ci95": [
+          -0.0101,
+          0.0215
+        ],
+        "verdict": "no detectable difference"
+      },
+      "SEA": {
+        "test": "A1 vs SSP at SEA",
+        "a": "A1",
+        "b": "ssp",
+        "n": 132,
+        "brier_a": 0.1073,
+        "brier_b": 0.1065,
+        "a_minus_b": 0.0008,
+        "ci95": [
+          -0.0125,
+          0.0129
+        ],
+        "verdict": "no detectable difference"
+      }
+    },
+    "pairs": [
+      {
+        "test": "H2: discussions help? (A1 vs A2)",
+        "a": "A1",
+        "b": "A2",
+        "n": 1321,
+        "brier_a": 0.0796,
+        "brier_b": 0.0706,
+        "a_minus_b": 0.0091,
+        "ci95": [
+          0.0057,
+          0.0125
+        ],
+        "verdict": "b better"
+      },
+      {
+        "test": "A1 vs A3 (baseline tool)",
+        "a": "A1",
+        "b": "A3",
+        "n": 1321,
+        "brier_a": 0.0796,
+        "brier_b": 0.1,
+        "a_minus_b": -0.0203,
+        "ci95": [
+          -0.0241,
+          -0.0166
+        ],
+        "verdict": "a better"
+      },
+      {
+        "test": "H3: SSP vs model vote",
+        "a": "ssp",
+        "b": "vote",
+        "n": 1321,
+        "brier_a": 0.0731,
+        "brier_b": 0.1119,
+        "a_minus_b": -0.0387,
+        "ci95": [
+          -0.0475,
+          -0.0302
+        ],
+        "verdict": "a better"
+      },
+      {
+        "test": "temp: A1 vs MOS-based",
+        "a": "A1",
+        "b": "mos_based",
+        "n": 1321,
+        "brier_a": 0.0796,
+        "brier_b": 0.0816,
+        "a_minus_b": -0.002,
+        "ci95": [
+          -0.0094,
+          0.0053
+        ],
+        "verdict": "no detectable difference"
+      },
+      {
+        "test": "A1 vs extraction baseline",
+        "a": "A1",
+        "b": "extraction",
+        "n": 1321,
+        "brier_a": 0.0796,
+        "brier_b": 0.0873,
+        "a_minus_b": -0.0076,
+        "ci95": [
+          -0.0145,
+          -0.0009
+        ],
+        "verdict": "a better"
+      },
+      {
+        "test": "extraction vs SSP",
+        "a": "extraction",
+        "b": "ssp",
+        "n": 1321,
+        "brier_a": 0.0873,
+        "brier_b": 0.0731,
+        "a_minus_b": 0.0141,
+        "ci95": [
+          0.0084,
+          0.0204
+        ],
+        "verdict": "b better"
+      }
+    ],
+    "h8_cost_vs_quality (same 100 questions)": [
+      {
+        "model": "haiku-5-5",
+        "brier": 0.0914,
+        "usd_per_1000": 2.224
+      },
+      {
+        "model": "sonnet-5-5",
+        "brier": 0.072,
+        "usd_per_1000": 21.43
+      },
+      {
+        "model": "opus-5-5",
+        "brier": 0.0721,
+        "usd_per_1000": 80.673
+      },
+      {
+        "test": "Sonnet vs Haiku",
+        "a": "sonnet",
+        "b": "A1",
+        "n": 100,
+        "brier_a": 0.072,
+        "brier_b": 0.0914,
+        "a_minus_b": -0.0194,
+        "ci95": [
+          -0.0383,
+          -0.0024
+        ],
+        "verdict": "a better"
+      },
+      {
+        "test": "Opus vs Haiku",
+        "a": "opus",
+        "b": "A1",
+        "n": 100,
+        "brier_a": 0.0721,
+        "brier_b": 0.0914,
+        "a_minus_b": -0.0193,
+        "ci95": [
+          -0.034,
+          -0.0071
+        ],
+        "verdict": "a better"
+      }
+    ],
+    "primary_test": {
+      "test": "H1",
+      "a": "A1",
+      "b": "ssp",
+      "n": 1321,
+      "brier_a": 0.0796,
+      "brier_b": 0.0731,
+      "a_minus_b": 0.0065,
+      "ci95": [
+        0.0014,
+        0.0114
+      ],
+      "verdict": "b better"
+    }
+  },
+  "precip": {
+    "runs": {
+      "A1p": {
+        "files": [
+          "holdout_precip_A1p_haiku-5-5_holdout_primary.jsonl",
+          "holdout_precip_A1p_haiku-5-5_holdout_secondary.jsonl"
+        ],
+        "answered": 2885,
+        "errors": 0,
+        "cost_usd": 5.3114,
+        "usd_per_1000": 1.841,
+        "median_seconds": 6.6
+      },
+      "A2p": {
+        "files": [
+          "holdout_precip_A2p_haiku-5-5_holdout_primary.jsonl"
+        ],
+        "answered": 1271,
+        "errors": 0,
+        "cost_usd": 1.4639,
+        "usd_per_1000": 1.152,
+        "median_seconds": 6.1
+      },
+      "A3p": {
+        "files": [
+          "holdout_precip_A3p_haiku-5-5_holdout_primary.jsonl"
+        ],
+        "answered": 1271,
+        "errors": 0,
+        "cost_usd": 2.347,
+        "usd_per_1000": 1.847,
+        "median_seconds": 6.7
+      },
+      "sonnet": {
+        "files": [
+          "h8_precip_A1p_sonnet-5-5_holdout_primary.jsonl"
+        ],
+        "answered": 100,
+        "errors": 0,
+        "cost_usd": 2.1241,
+        "usd_per_1000": 21.241,
+        "median_seconds": 6.8
+      },
+      "opus": {
+        "files": [
+          "h8_precip_A1p_opus-5-5_holdout_primary.jsonl"
+        ],
+        "answered": 100,
+        "errors": 0,
+        "cost_usd": 6.4748,
+        "usd_per_1000": 64.748,
+        "median_seconds": 11.05
+      }
+    },
+    "primary_table": [
+      {
+        "system": "climatology",
+        "n": 1271,
+        "brier": 0.134,
+        "skill_vs_climatology": 0.0,
+        "minus_ssp": 0.052,
+        "ci95": "[+0.0392, +0.0651]"
+      },
+      {
+        "system": "vote",
+        "n": 1271,
+        "brier": 0.1343,
+        "skill_vs_climatology": -0.002,
+        "minus_ssp": 0.0522,
+        "ci95": "[+0.0431, +0.0616]"
+      },
+      {
+        "system": "ssp",
+        "n": 1271,
+        "brier": 0.0821,
+        "skill_vs_climatology": 0.388,
+        "minus_ssp": 0.0,
+        "ci95": "[+0.0000, +0.0000]"
+      },
+      {
+        "system": "mos_based",
+        "n": 1271,
+        "brier": 0.0883,
+        "skill_vs_climatology": 0.341,
+        "minus_ssp": 0.0062,
+        "ci95": "[-0.0019, +0.0142]"
+      },
+      {
+        "system": "extraction",
+        "n": 1271,
+        "brier": 0.0797,
+        "skill_vs_climatology": 0.405,
+        "minus_ssp": -0.0023,
+        "ci95": "[-0.0082, +0.0034]"
+      },
+      {
+        "system": "A1p",
+        "n": 1271,
+        "brier": 0.0748,
+        "skill_vs_climatology": 0.442,
+        "minus_ssp": -0.0072,
+        "ci95": "[-0.0120, -0.0025]"
+      },
+      {
+        "system": "A2p",
+        "n": 1271,
+        "brier": 0.0775,
+        "skill_vs_climatology": 0.422,
+        "minus_ssp": -0.0046,
+        "ci95": "[-0.0080, -0.0013]"
+      },
+      {
+        "system": "A3p",
+        "n": 1271,
+        "brier": 0.0771,
+        "skill_vs_climatology": 0.425,
+        "minus_ssp": -0.005,
+        "ci95": "[-0.0115, +0.0013]"
+      }
+    ],
+    "secondary_table": [
+      {
+        "system": "climatology",
+        "n": 1614,
+        "brier": 0.1416,
+        "skill_vs_climatology": 0.0,
+        "minus_ssp": 0.0779,
+        "ci95": "[+0.0681, +0.0881]"
+      },
+      {
+        "system": "vote",
+        "n": 1614,
+        "brier": 0.1002,
+        "skill_vs_climatology": 0.292,
+        "minus_ssp": 0.0365,
+        "ci95": "[+0.0285, +0.0447]"
+      },
+      {
+        "system": "ssp",
+        "n": 1614,
+        "brier": 0.0637,
+        "skill_vs_climatology": 0.55,
+        "minus_ssp": 0.0,
+        "ci95": "[+0.0000, +0.0000]"
+      },
+      {
+        "system": "mos_based",
+        "n": 1614,
+        "brier": 0.0656,
+        "skill_vs_climatology": 0.537,
+        "minus_ssp": 0.002,
+        "ci95": "[-0.0040, +0.0081]"
+      },
+      {
+        "system": "extraction",
+        "n": 1614,
+        "brier": 0.0681,
+        "skill_vs_climatology": 0.519,
+        "minus_ssp": 0.0044,
+        "ci95": "[+0.0003, +0.0086]"
+      },
+      {
+        "system": "A1p",
+        "n": 1614,
+        "brier": 0.0594,
+        "skill_vs_climatology": 0.58,
+        "minus_ssp": -0.0042,
+        "ci95": "[-0.0082, -0.0003]"
+      }
+    ],
+    "uncertain_subset_table (SSP 0.1-0.9)": [
+      {
+        "system": "climatology",
+        "n": 407,
+        "brier": 0.2913,
+        "skill_vs_climatology": 0.0,
+        "minus_ssp": 0.0886,
+        "ci95": "[+0.0524, +0.1246]"
+      },
+      {
+        "system": "vote",
+        "n": 407,
+        "brier": 0.3154,
+        "skill_vs_climatology": -0.083,
+        "minus_ssp": 0.1126,
+        "ci95": "[+0.0868, +0.1380]"
+      },
+      {
+        "system": "ssp",
+        "n": 407,
+        "brier": 0.2028,
+        "skill_vs_climatology": 0.304,
+        "minus_ssp": 0.0,
+        "ci95": "[+0.0000, +0.0000]"
+      },
+      {
+        "system": "mos_based",
+        "n": 407,
+        "brier": 0.2115,
+        "skill_vs_climatology": 0.274,
+        "minus_ssp": 0.0087,
+        "ci95": "[-0.0155, +0.0321]"
+      },
+      {
+        "system": "extraction",
+        "n": 407,
+        "brier": 0.1979,
+        "skill_vs_climatology": 0.321,
+        "minus_ssp": -0.0048,
+        "ci95": "[-0.0213, +0.0119]"
+      },
+      {
+        "system": "A1p",
+        "n": 407,
+        "brier": 0.1784,
+        "skill_vs_climatology": 0.387,
+        "minus_ssp": -0.0243,
+        "ci95": "[-0.0378, -0.0113]"
+      },
+      {
+        "system": "A2p",
+        "n": 407,
+        "brier": 0.189,
+        "skill_vs_climatology": 0.351,
+        "minus_ssp": -0.0138,
+        "ci95": "[-0.0243, -0.0037]"
+      },
+      {
+        "system": "A3p",
+        "n": 407,
+        "brier": 0.1801,
+        "skill_vs_climatology": 0.382,
+        "minus_ssp": -0.0227,
+        "ci95": "[-0.0412, -0.0053]"
+      }
+    ],
+    "by_station": {
+      "ATL": {
+        "test": "A1p vs SSP at ATL",
+        "a": "A1p",
+        "b": "ssp",
+        "n": 130,
+        "brier_a": 0.1167,
+        "brier_b": 0.1389,
+        "a_minus_b": -0.0222,
+        "ci95": [
+          -0.0421,
+          -0.0039
+        ],
+        "verdict": "a better"
+      },
+      "BOS": {
+        "test": "A1p vs SSP at BOS",
+        "a": "A1p",
+        "b": "ssp",
+        "n": 122,
+        "brier_a": 0.0776,
+        "brier_b": 0.0875,
+        "a_minus_b": -0.0099,
+        "ci95": [
+          -0.0263,
+          0.0042
+        ],
+        "verdict": "no detectable difference"
+      },
+      "DEN": {
+        "test": "A1p vs SSP at DEN",
+        "a": "A1p",
+        "b": "ssp",
+        "n": 135,
+        "brier_a": 0.1098,
+        "brier_b": 0.109,
+        "a_minus_b": 0.0007,
+        "ci95": [
+          -0.0125,
+          0.0144
+        ],
+        "verdict": "no detectable difference"
+      },
+      "DFW": {
+        "test": "A1p vs SSP at DFW",
+        "a": "A1p",
+        "b": "ssp",
+        "n": 133,
+        "brier_a": 0.0467,
+        "brier_b": 0.0645,
+        "a_minus_b": -0.0178,
+        "ci95": [
+          -0.0349,
+          -0.0014
+        ],
+        "verdict": "a better"
+      },
+      "LAX": {
+        "test": "A1p vs SSP at LAX",
+        "a": "A1p",
+        "b": "ssp",
+        "n": 132,
+        "brier_a": 0.0108,
+        "brier_b": 0.011,
+        "a_minus_b": -0.0002,
+        "ci95": [
+          -0.0098,
+          0.0079
+        ],
+        "verdict": "no detectable difference"
+      },
+      "MIA": {
+        "test": "A1p vs SSP at MIA",
+        "a": "A1p",
+        "b": "ssp",
+        "n": 123,
+        "brier_a": 0.1566,
+        "brier_b": 0.1594,
+        "a_minus_b": -0.0027,
+        "ci95": [
+          -0.021,
+          0.0148
+        ],
+        "verdict": "no detectable difference"
+      },
+      "NYC": {
+        "test": "A1p vs SSP at NYC",
+        "a": "A1p",
+        "b": "ssp",
+        "n": 117,
+        "brier_a": 0.0734,
+        "brier_b": 0.0854,
+        "a_minus_b": -0.012,
+        "ci95": [
+          -0.0292,
+          0.0069
+        ],
+        "verdict": "no detectable difference"
+      },
+      "ORD": {
+        "test": "A1p vs SSP at ORD",
+        "a": "A1p",
+        "b": "ssp",
+        "n": 124,
+        "brier_a": 0.0674,
+        "brier_b": 0.07,
+        "a_minus_b": -0.0026,
+        "ci95": [
+          -0.0162,
+          0.0094
+        ],
+        "verdict": "no detectable difference"
+      },
+      "PHX": {
+        "test": "A1p vs SSP at PHX",
+        "a": "A1p",
+        "b": "ssp",
+        "n": 129,
+        "brier_a": 0.0592,
+        "brier_b": 0.0666,
+        "a_minus_b": -0.0074,
+        "ci95": [
+          -0.021,
+          0.0054
+        ],
+        "verdict": "no detectable difference"
+      },
+      "SEA": {
+        "test": "A1p vs SSP at SEA",
+        "a": "A1p",
+        "b": "ssp",
+        "n": 126,
+        "brier_a": 0.0333,
+        "brier_b": 0.0318,
+        "a_minus_b": 0.0016,
+        "ci95": [
+          -0.0061,
+          0.0094
+        ],
+        "verdict": "no detectable difference"
+      }
+    },
+    "pairs": [
+      {
+        "test": "H5: discussions help? (A1p vs A2p)",
+        "a": "A1p",
+        "b": "A2p",
+        "n": 1271,
+        "brier_a": 0.0748,
+        "brier_b": 0.0775,
+        "a_minus_b": -0.0027,
+        "ci95": [
+          -0.0064,
+          0.001
+        ],
+        "verdict": "no detectable difference"
+      },
+      {
+        "test": "A1p vs A3p (baseline tool)",
+        "a": "A1p",
+        "b": "A3p",
+        "n": 1271,
+        "brier_a": 0.0748,
+        "brier_b": 0.0771,
+        "a_minus_b": -0.0022,
+        "ci95": [
+          -0.0049,
+          0.0004
+        ],
+        "verdict": "no detectable difference"
+      },
+      {
+        "test": "H6: SSP vs model vote",
+        "a": "ssp",
+        "b": "vote",
+        "n": 1271,
+        "brier_a": 0.0821,
+        "brier_b": 0.1343,
+        "a_minus_b": -0.0522,
+        "ci95": [
+          -0.0616,
+          -0.0431
+        ],
+        "verdict": "a better"
+      },
+      {
+        "test": "H7: A1p vs MOS-based",
+        "a": "A1p",
+        "b": "mos_based",
+        "n": 1271,
+        "brier_a": 0.0748,
+        "brier_b": 0.0883,
+        "a_minus_b": -0.0134,
+        "ci95": [
+          -0.0208,
+          -0.0067
+        ],
+        "verdict": "a better"
+      },
+      {
+        "test": "A1p vs extraction baseline",
+        "a": "A1p",
+        "b": "extraction",
+        "n": 1271,
+        "brier_a": 0.0748,
+        "brier_b": 0.0797,
+        "a_minus_b": -0.0049,
+        "ci95": [
+          -0.0097,
+          -0.0002
+        ],
+        "verdict": "a better"
+      },
+      {
+        "test": "extraction vs SSP",
+        "a": "extraction",
+        "b": "ssp",
+        "n": 1271,
+        "brier_a": 0.0797,
+        "brier_b": 0.0821,
+        "a_minus_b": -0.0023,
+        "ci95": [
+          -0.0082,
+          0.0034
+        ],
+        "verdict": "no detectable difference"
+      }
+    ],
+    "h8_cost_vs_quality (same 100 questions)": [
+      {
+        "model": "haiku-5-5",
+        "brier": 0.0846,
+        "usd_per_1000": 1.841
+      },
+      {
+        "model": "sonnet-5-5",
+        "brier": 0.0894,
+        "usd_per_1000": 21.241
+      },
+      {
+        "model": "opus-5-5",
+        "brier": 0.0806,
+        "usd_per_1000": 64.748
+      },
+      {
+        "test": "Sonnet vs Haiku",
+        "a": "sonnet",
+        "b": "A1p",
+        "n": 100,
+        "brier_a": 0.0894,
+        "brier_b": 0.0846,
+        "a_minus_b": 0.0048,
+        "ci95": [
+          -0.0039,
+          0.0139
+        ],
+        "verdict": "no detectable difference"
+      },
+      {
+        "test": "Opus vs Haiku",
+        "a": "opus",
+        "b": "A1p",
+        "n": 100,
+        "brier_a": 0.0806,
+        "brier_b": 0.0846,
+        "a_minus_b": -0.004,
+        "ci95": [
+          -0.0116,
+          0.0033
+        ],
+        "verdict": "no detectable difference"
+      }
+    ],
+    "primary_test": {
+      "test": "H4",
+      "a": "A1p",
+      "b": "ssp",
+      "n": 1271,
+      "brier_a": 0.0748,
+      "brier_b": 0.0821,
+      "a_minus_b": -0.0072,
+      "ci95": [
+        -0.012,
+        -0.0025
+      ],
+      "verdict": "a better"
+    }
+  },
+  "co_primary": {
+    "p_values": {
+      "H1": 0.0106,
+      "H4": 0.002
+    },
+    "holm_rejected_at_0.05": {
+      "H4": true,
+      "H1": true
+    }
+  },
+  "recall_probe": {
+    "temp": {
+      "dev": {
+        "n": 200,
+        "brier_no_tools": 0.2309,
+        "brier_climatology_same_q": 0.2386
+      },
+      "holdout_primary": {
+        "n": 200,
+        "brier_no_tools": 0.2321,
+        "brier_climatology_same_q": 0.2321
+      }
+    },
+    "precip": {
+      "dev": {
+        "n": 200,
+        "brier_no_tools": 0.1628,
+        "brier_climatology_same_q": 0.1703
+      },
+      "holdout_primary": {
+        "n": 200,
+        "brier_no_tools": 0.1507,
+        "brier_climatology_same_q": 0.1516
+      }
+    }
+  }
+}
