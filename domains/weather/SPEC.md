@@ -119,7 +119,60 @@ Audited 2026-11-19 (data-rights review of each source's published terms; overall
 3. Confirm the overnight-observation window matches the climate day (local standard time).
 4. Baseline sanity: B2 must beat B0 on dev; if not, the feature pipeline is suspected broken.
 
+## 9. Precipitation track (added 2026-11-19, before any outcome was analyzed)
+
+A second, separately scored question set through the same pipeline. Sections 1-8 still govern the
+temperature track unchanged; where this section is silent, the same rules apply (stations, dates, split,
+decision time t, point-in-time enforcement, leak audit, bootstrap, one-shot holdout, data rules).
+
+**Question:** at 06:00 local time on day D, will measurable precipitation (at least 0.01 in) be recorded at
+station S for climate day D?
+
+- **Outcome:** ACIS daily precipitation `pcpn` for the climate day. `1` if >= 0.01 in; trace (`T`) and 0.00
+  are `0`. Missing values and values flagged as multi-day accumulations are excluded and counted.
+- **Already decided:** questions where the station's hourly ASOS reports show >= 0.01 in accumulated between
+  the start of the climate day and t are excluded and counted, because the answer is already known at t.
+
+**Information allowed at t (in addition to section 4):**
+
+| Source | What | Point-in-time rule |
+| --- | --- | --- |
+| Open-Meteo Previous Runs API | Hourly precipitation for GFS, ECMWF IFS 0.25°, ICON | `previous_day1` for valid hours 00:00-20:59 local standard time on D, `previous_day2` for 21:00-23:59. Summed by the build script. |
+| IEM MOS archive | NWS GFS MOS guidance (6-hour precipitation probabilities `p06`, 12-hour `p12`) | Only the 00Z run of day D (published by about 04Z, before t at every station). |
+| IEM ASOS archive | Hourly precipitation `p01i` | Reports with timestamp <= t. |
+
+**Systems:**
+
+| Id | System | Notes |
+| --- | --- | --- |
+| P0 | Climatology | Share of dev days with measurable precipitation for that station and calendar month. |
+| P1 | Model vote | Share of available models whose day total is >= 0.01 in, shrunk as (k + 0.5) / (n + 1). |
+| **P2** | **Statistical correction (main baseline)** | Logistic regression on: log(1 + day total) for each model, number of models >= 0.01 in and >= 0.10 in, station one-hot, sin/cos of day of year. Fit on dev only; forward chaining over 6 time blocks on dev. |
+| P3 | MOS-based | Logistic regression on the 00Z GFS MOS `p06` values whose periods overlap the climate day. Fit on dev only. Used only if the MOS archive covers at least 95% of the questions; otherwise dropped, and the change log says so. |
+| A1p | Agent | As A1, with precipitation tools (model precipitation, MOS probabilities, overnight precipitation, P2's probability) and the forecast discussions. |
+| A2p | Agent without discussions | A1p without the discussion tool. |
+| A3p | Agent without P2 | A1p without the P2 tool. |
+
+**Hypotheses (scored the same way as section 6):**
+- **H4 (primary for this track):** A1p has a lower holdout Brier score than P2.
+- **H5:** A1p beats A2p (the discussions help). **H6:** P2 beats P1. **H7:** A1p vs P3 (reported either way).
+- The temperature and precipitation tracks are reported separately and together; a win on one track is
+  never presented as a win on the other.
+- Agent samples: dev 200 (seed 8), holdout 500 (50 per station, seed 12). Pre-declared subsets: P2 between
+  0.1 and 0.9, and by station (arid stations have few wet days).
+
+**Pre-run checks (added to section 8):** spot-check 20 precipitation outcomes against NWS climate reports;
+confirm the multi-day-accumulation flag handling; confirm the MOS 00Z publication time and coverage.
+
+**Data rules:** the IEM MOS archive is NWS guidance, US-government public domain, under the same IEM throttle
+(at most 1 request per second per public IP, which all of the author's machines share).
+
 ## Change log
 
 - 2026-11-19: frozen. (Before the freeze, section 8 was renamed from "before freezing" to "before any agent run",
   because its checks need downloaded data.)
+- 2026-11-19 (later the same day): added section 9, a precipitation question set, at the author's decision.
+  At the time of this change, temperature forecasts and part of the forecast discussions had been downloaded,
+  but no forecast had been compared with any outcome and no baseline had been fitted. Outcome data seen so
+  far, all from availability checks: completeness counts per station, Seattle's share of wet days (35%), and
+  a few individual days printed while testing the APIs. The temperature track (sections 1-8) is unchanged.

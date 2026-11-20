@@ -62,6 +62,15 @@ def test_gives_up_after_retries(tmp_path):
         c.fetch("https://x")
 
 
+def test_throttle_page_is_retried_and_never_cached(tmp_path):
+    from domains.weather.download import iem_throttled
+    c, _ = client(tmp_path, [FakeResponse(200, "Too many requests from your IP address, slow down."),
+                             FakeResponse(200, "real data")])
+    c.reject = iem_throttled
+    assert c.fetch("https://x") == "real data"
+    assert c.session.calls == 2 and len(list(tmp_path.glob("*.gz"))) == 1
+
+
 def test_months_cover_range_exactly():
     from datetime import date
     m = list(months(date(2024, 2, 10), date(2024, 4, 5)))

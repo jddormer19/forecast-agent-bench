@@ -19,7 +19,7 @@ RETRY_STATUS = {429, 500, 502, 503, 504}
 
 class CachedClient:
     def __init__(self, cache_dir: Path, min_interval_s: float, max_retries: int = 5, timeout_s: float = 60,
-                 session: requests.Session | None = None, sleep=time.sleep, clock=time.monotonic):
+                 session: requests.Session | None = None, sleep=time.sleep, clock=time.monotonic, reject=None):
         self.cache_dir = Path(cache_dir)
         self.min_interval_s = min_interval_s
         self.max_retries = max_retries
@@ -28,6 +28,8 @@ class CachedClient:
         self.session.headers["User-Agent"] = USER_AGENT
         self._sleep, self._clock = sleep, clock
         self._last = None
+        # reject(text) -> True marks a 200 response that is really a throttle/error page: retried, never cached
+        self.reject = reject or (lambda text: False)
         self.network_calls = 0
 
     def _key(self, method: str, url: str, params, body) -> Path:
@@ -62,6 +64,11 @@ class CachedClient:
                 self._sleep(max(backoff, float(r.headers.get("Retry-After", 0) or 0))); backoff *= 2
                 continue
             r.raise_for_status()
+            if self.reject(r.text):
+                if attempt == self.max_retries:
+                    raise RuntimeError(f"rejected response from {url}: {r.text[:80]!r}")
+                self._sleep(backoff); backoff *= 2
+                continue
             path.parent.mkdir(parents=True, exist_ok=True)
             tmp = path.with_suffix(".tmp")
             tmp.write_bytes(gzip.compress(r.text.encode("utf-8")))
