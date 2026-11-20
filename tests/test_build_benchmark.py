@@ -36,15 +36,33 @@ def test_build_outcomes_splits_and_exclusions():
         ("DFW", "2026-03-01", "68", "68", "0.25A"),  # holdout; equal counts as yes; accumulated -> excluded
         ("DFW", "2023-12-31", "50", "55", "0.00"),   # outside range
     ])
-    asos = pd.DataFrame({"sid": ["DFW", "DFW"],
-                         "valid_utc": pd.to_datetime(["2025-03-03 08:53", "2025-03-03 13:53"], utc=True),
-                         "tmpf": [50.0, 52.0], "p01i": [0.02, 0.30]})  # 0.02 by 06:00 CST (12Z); 13:53Z is after t
+    asos = pd.DataFrame({"sid": ["DFW", "DFW", "DFW"],
+                         "valid_utc": pd.to_datetime(["2025-03-03 08:53", "2025-03-03 13:53", "2025-03-01 09:53"],
+                                                     utc=True),
+                         "tmpf": [50.0, 52.0, 66.0], "p01i": [0.02, 0.30, 0.0]})  # 0.02 by 06:00 CST; 13:53Z is after t
     temp, precip, m = build(acis, asos)
     assert temp.set_index("qid").outcome.to_dict() == {"DFW-2025-03-01": 1, "DFW-2025-03-02": 0, "DFW-2026-03-01": 1}
     assert temp.set_index("qid").split["DFW-2026-03-01"] == "holdout"
+    assert temp.set_index("qid").period["DFW-2026-03-01"] == "holdout_secondary"
     assert m["temp"]["exclusions"]["missing_or_flagged_maxt"] == 1
+    assert m["temp"]["exclusions"]["already_reached_before_t"] == 0   # 66 overnight < 68 normal: still open
     assert precip.set_index("qid").outcome.to_dict() == {"DFW-2025-03-01": 0, "DFW-2025-03-02": 0}
     assert m["precip"]["exclusions"] == {"missing_or_accumulated_pcpn": 1, "already_measurable_before_t": 1}
+
+
+def test_temp_question_already_reached_is_excluded():
+    acis = acis_rows([("DFW", "2025-03-01", "75", "68", "0.00")])
+    asos = pd.DataFrame({"sid": ["DFW"], "valid_utc": pd.to_datetime(["2025-03-01 07:53"], utc=True),
+                         "tmpf": [70.0], "p01i": [0.0]})                    # 70 >= 68 before 06:00 CST
+    temp, _, m = build(acis, asos)
+    assert temp.empty and m["temp"]["exclusions"]["already_reached_before_t"] == 1
+
+
+def test_primary_holdout_starts_july_2026():
+    from datetime import date
+    from domains.weather.build_benchmark import period
+    assert [period(date(2025, 12, 31)), period(date(2026, 6, 30)), period(date(2026, 7, 1))] == \
+        ["dev", "holdout_secondary", "holdout_primary"]
 
 
 def test_fingerprint_is_stable_and_sensitive():

@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from datetime import date, datetime, time, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -21,6 +22,7 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "weather"
 FIRST, LAST = date(2024, 3, 1), date(2026, 11, 15)
 HOLDOUT_START = date(2026, 1, 1)
+PRIMARY_START = date(2026, 7, 1)   # first month after the pinned model's Jun 2026 training cutoff (SPEC 10.2)
 DECISION_LOCAL = time(6, 0)
 MEASURABLE_IN = 0.01
 
@@ -59,16 +61,22 @@ def fingerprint(df: pd.DataFrame, cols: list[str]) -> str:
     return hashlib.sha256("\n".join(rows).encode()).hexdigest()[:16]
 
 
-def precip_before_t(asos: pd.DataFrame) -> dict[tuple[str, date], float]:
-    """Hourly precipitation accumulated from the climate-day start to t (inclusive), per (sid, date)."""
+def before_t(asos: pd.DataFrame) -> dict[tuple[str, date], tuple[float, float]]:
+    """(precipitation accumulated, max temperature) from the climate-day start to t (inclusive), per (sid, date)."""
     out = {}
-    for sid, g in asos.dropna(subset=["p01i"]).groupby("sid"):
+    for sid, g in asos.groupby("sid"):
         g = g.set_index("valid_utc").sort_index()
         for d in pd.date_range(FIRST, LAST).date:
             a, t = climate_day_start_utc(sid, d), decision_time_utc(sid, d)
             # p01i is the amount in the hour ending at the report, so a report after `a` covers time after `a`
-            out[(sid, d)] = float(g.loc[(g.index > a) & (g.index <= t), "p01i"].clip(lower=0).sum())
+            w = g.loc[(g.index > a) & (g.index <= t)]
+            out[(sid, d)] = (float(w.p01i.clip(lower=0).sum()), float(w.tmpf.max()) if w.tmpf.notna().any() else math.nan)
     return out
+
+
+def period(d: date) -> str:
+    """dev, or the secondary (before the model's training cutoff) or primary (after it) holdout: SPEC 10.2."""
+    return "dev" if d < HOLDOUT_START else ("holdout_primary" if d >= PRIMARY_START else "holdout_secondary")
 
 
 def build(acis: pd.DataFrame, asos: pd.DataFrame | None) -> tuple[pd.DataFrame, pd.DataFrame, dict]:
@@ -80,14 +88,23 @@ def build(acis: pd.DataFrame, asos: pd.DataFrame | None) -> tuple[pd.DataFrame, 
     a["qid"] = a.sid + "-" + a.date.astype(str)
     a["t_utc"] = [decision_time_utc(s, d) for s, d in zip(a.sid, a.date)]
     a["split"] = ["holdout" if d >= HOLDOUT_START else "dev" for d in a.date]
-    manifest = {"range": [FIRST.isoformat(), LAST.isoformat()], "holdout_start": HOLDOUT_START.isoformat()}
+    a["period"] = a.date.map(period)
+    manifest = {"range": [FIRST.isoformat(), LAST.isoformat()], "holdout_start": HOLDOUT_START.isoformat(),
+                "primary_holdout_start": PRIMARY_START.isoformat()}
+    early = before_t(asos) if asos is not None else {}
 
-    # temperature track (SPEC 1)
+    # temperature track (SPEC 1, 10.4)
     ex_t = {"missing_or_flagged_maxt": int(a.maxt.isna().sum()), "missing_normal": int(a.normal.isna().sum())}
     temp = a.dropna(subset=["maxt", "normal"]).copy()
     temp["threshold_f"] = temp.normal.astype(int)
+    if early:
+        overnight_max = pd.Series([early.get((s, d), (0.0, math.nan))[1] for s, d in zip(temp.sid, temp.date)],
+                                  index=temp.index)
+        decided = overnight_max >= temp.threshold_f
+        ex_t["already_reached_before_t"] = int(decided.sum())
+        temp = temp[~decided]
     temp["outcome"] = (temp.maxt >= temp.threshold_f).astype(int)
-    temp = temp[["qid", "sid", "date", "t_utc", "split", "threshold_f", "outcome"]].sort_values("qid")
+    temp = temp[["qid", "sid", "date", "t_utc", "split", "period", "threshold_f", "outcome"]].sort_values("qid")
     manifest["temp"] = _summary(temp, ex_t, ["qid", "threshold_f", "outcome"])
 
     # precipitation track (SPEC 9)
@@ -95,20 +112,19 @@ def build(acis: pd.DataFrame, asos: pd.DataFrame | None) -> tuple[pd.DataFrame, 
     p["pcpn"] = p.pcpn_raw.map(parse_pcpn) if "pcpn_raw" in p else None
     ex_p = {"missing_or_accumulated_pcpn": int(p.pcpn.isna().sum())}
     p = p.dropna(subset=["pcpn"])
-    if asos is not None:
-        before = precip_before_t(asos)
-        p["precip_before_t_in"] = [before.get((s, d), 0.0) for s, d in zip(p.sid, p.date)]
+    if early:
+        p["precip_before_t_in"] = [early.get((s, d), (0.0, math.nan))[0] for s, d in zip(p.sid, p.date)]
         decided = p.precip_before_t_in >= MEASURABLE_IN
         ex_p["already_measurable_before_t"] = int(decided.sum())
         p = p[~decided]
     p["outcome"] = (p.pcpn >= MEASURABLE_IN).astype(int)
-    precip = p[["qid", "sid", "date", "t_utc", "split", "outcome"]].sort_values("qid")
+    precip = p[["qid", "sid", "date", "t_utc", "split", "period", "outcome"]].sort_values("qid")
     manifest["precip"] = _summary(precip, ex_p, ["qid", "outcome"])
     return temp, precip, manifest
 
 
 def _summary(df: pd.DataFrame, exclusions: dict, fp_cols: list[str]) -> dict:
-    return {"questions": len(df), "dev": int((df.split == "dev").sum()), "holdout": int((df.split == "holdout").sum()),
+    return {"questions": len(df), "by_period": df.groupby("period").size().to_dict(),
             "per_station": df.groupby("sid").size().to_dict(), "exclusions": exclusions,
             "fingerprint": fingerprint(df, fp_cols)}
     # base rates are deliberately NOT computed here: outcomes are not summarized before the baselines are fitted
@@ -130,7 +146,7 @@ def main(check: bool):
     temp.to_parquet(DATA / "questions_temp.parquet", index=False)
     precip.to_parquet(DATA / "questions_precip.parquet", index=False)
     path.write_text(json.dumps(manifest, indent=2, default=str))
-    print(json.dumps({k: {kk: v[kk] for kk in ("questions", "dev", "holdout", "exclusions", "fingerprint")}
+    print(json.dumps({k: {kk: v[kk] for kk in ("questions", "by_period", "exclusions", "fingerprint")}
                       for k, v in manifest.items() if k in ("temp", "precip")}, indent=2))
 
 

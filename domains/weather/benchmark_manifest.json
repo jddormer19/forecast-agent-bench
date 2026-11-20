@@ -1,0 +1,59 @@
+{
+  "range": [
+    "2024-03-01",
+    "2026-11-15"
+  ],
+  "holdout_start": "2026-01-01",
+  "primary_holdout_start": "2026-07-01",
+  "temp": {
+    "questions": 9256,
+    "by_period": {
+      "dev": 6291,
+      "holdout_primary": 1321,
+      "holdout_secondary": 1644
+    },
+    "per_station": {
+      "ATL": 929,
+      "BOS": 895,
+      "DEN": 944,
+      "DFW": 906,
+      "LAX": 974,
+      "MIA": 988,
+      "NYC": 870,
+      "ORD": 836,
+      "PHX": 979,
+      "SEA": 935
+    },
+    "exclusions": {
+      "missing_or_flagged_maxt": 1,
+      "missing_normal": 0,
+      "already_reached_before_t": 643
+    },
+    "fingerprint": "4f79d8bc29d171b8"
+  },
+  "precip": {
+    "questions": 8899,
+    "by_period": {
+      "dev": 6014,
+      "holdout_primary": 1271,
+      "holdout_secondary": 1614
+    },
+    "per_station": {
+      "ATL": 892,
+      "BOS": 847,
+      "DEN": 939,
+      "DFW": 911,
+      "LAX": 948,
+      "MIA": 891,
+      "NYC": 847,
+      "ORD": 862,
+      "PHX": 956,
+      "SEA": 806
+    },
+    "exclusions": {
+      "missing_or_accumulated_pcpn": 5,
+      "already_measurable_before_t": 996
+    },
+    "fingerprint": "4bcd718468131886"
+  }
+}
