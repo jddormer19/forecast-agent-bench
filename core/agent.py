@@ -94,18 +94,21 @@ def _add_usage(usage: dict, resp) -> dict:
 def tool_specs(toolbox: ToolBox, allowed: list[str] | None) -> list[dict]:
     """Anthropic tool definitions from the ToolBox. The agent never passes qid: the runner adds it."""
     import inspect
+    import typing
     specs = []
     for name, fn in toolbox.tools.items():
         if allowed is not None and name not in allowed:
             continue
+        hints = typing.get_type_hints(fn)   # resolves string annotations (from __future__ import annotations)
         props = {}
         for p in list(inspect.signature(fn).parameters.values())[2:]:
-            ann = p.annotation if isinstance(p.annotation, str) else getattr(p.annotation, "__name__", "")
-            if "Literal" in str(p.annotation):
-                props[p.name] = {"type": "string", "enum": list(p.annotation.__args__)}
+            h = hints.get(p.name, str)
+            if typing.get_origin(h) is typing.Literal:
+                props[p.name] = {"type": "string", "enum": list(typing.get_args(h))}
             else:
-                props[p.name] = {"type": {"int": "integer", "float": "number"}.get(ann, "string")}
-            props[p.name]["default"] = p.default
+                props[p.name] = {"type": {int: "integer", float: "number", bool: "boolean"}.get(h, "string")}
+            if p.default is not inspect.Parameter.empty:
+                props[p.name]["default"] = p.default
         specs.append({"name": name, "description": inspect.getdoc(fn) or "",
                       "input_schema": {"type": "object", "properties": props, "additionalProperties": False}})
     return specs
@@ -181,7 +184,7 @@ def load_env_file(path: Path) -> None:
 
 async def run_questions(toolbox: ToolBox, qids: list[str], *, system: str, model: str, budget: Budget,
                         run_label: str, out_path: Path, allowed: list[str] | None = None, effort: str = "medium",
-                        est_cost_usd: float = 0.01, fallback=None) -> list[dict]:
+                        est_cost_usd: float = 0.01, fallback=None, intro=None) -> list[dict]:
     """Run the agent on each question, appending one JSON line per question to out_path.
 
     Questions already in out_path are skipped (resumable). A failed question records the error and, if given,
@@ -204,6 +207,7 @@ async def run_questions(toolbox: ToolBox, qids: list[str], *, system: str, model
         try:
             st = await graph.ainvoke({"qid": qid, "tool_calls": 0, "trace": [], "usage": {}, "forecast": None,
                                       "messages": [{"role": "user", "content":
+                                                    (intro(qid) + "\n\n" if intro else "") +
                                                     f"Answer question {qid}. Use the tools, then stop."}]})
             usage = st["usage"]
             row.update(probability=st["forecast"]["probability"], forecast=st["forecast"],

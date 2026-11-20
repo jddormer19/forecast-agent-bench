@@ -253,6 +253,12 @@ item 1 is replaced by this rule.
 - 2026-11-19: H8 extended at the author's decision to include claude-sonnet-5-5 (same page lists its cutoff as
   Jun 2026), giving a three-model cost-versus-quality comparison on the same questions. Budget cap unchanged
   ($30); the comparison stays at spending priority 5. No agent had run yet.
+- 2026-11-20: budget cap raised from $30 to $55 at the author's decision, after a 20-question dev pilot measured
+  real Haiku costs ($0.0024 per temperature question, $0.0019 per precipitation question): priorities 1-4 need
+  about $20, and the H8 comparison (Sonnet about 20x, Opus about 40x Haiku's price) about $26. The spending
+  order of 10.1 is unchanged. Also from the pilot (dev questions only): the question text, station and decision
+  time are given in the agent's first message instead of through a get_question tool, which the pilot called
+  14 times for 10 questions. No holdout question had been run.
 - 2026-11-19: **leak check (10.7) failed as specified, and was corrected.** Result v1
   (`data/weather/checks/leak_check_v1_failed.json`): temperature values crediting the latest matching run were
   "unsafe" for 1.3-2.4% of values (GFS 2.35%, ICON 1.33%, ECMWF 2.0%) and 33% of ECMWF values matched no run.
