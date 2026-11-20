@@ -54,9 +54,13 @@ SYSTEM_PROMPT = {
 }
 
 
-def pick(questions: pd.DataFrame, period: str, n: int | None, seed: int) -> list[str]:
-    """Questions from one period; with n, a sample stratified by station (as equal as possible)."""
-    q = questions[questions.period == period]
+def pick(questions: pd.DataFrame, period: str, n: int | None, seed: int, scored: set[str]) -> list[str]:
+    """Questions from one period; with n, a sample stratified by station (as equal as possible).
+
+    Only questions with a baseline prediction (`scored`) are eligible: on dev that excludes time block 1, which the
+    forward-chained baselines use only for training, exactly as dev scoring does.
+    """
+    q = questions[(questions.period == period) & questions.qid.isin(scored)]
     if n is None:
         return q.qid.tolist()
     per = max(1, n // q.sid.nunique())
@@ -84,7 +88,8 @@ def main():
     q["date"] = pd.to_datetime(q.date).dt.date
     ssp = ssp_for_tools(a.track)
     tb = build_toolbox(q, a.track, log_path=RUNS / "tool_calls.jsonl", ssp=ssp)
-    qids = pick(q, a.period, None if a.all else a.n, a.seed)
+    scored = set(pd.read_parquet(DATA / f"baselines_{a.track}.parquet").qid)
+    qids = pick(q, a.period, None if a.all else a.n, a.seed, scored)
     name = f"{a.label}_{a.track}_{a.system}_{a.model.replace('claude-', '')}_{a.period}"
     out = RUNS / f"{name}.jsonl"
     print(f"{name}: {len(qids)} questions -> {out.relative_to(ROOT)}")

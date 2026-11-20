@@ -109,7 +109,7 @@ def predict_all(track: str, df: pd.DataFrame) -> pd.DataFrame:
 def ssp_for_tools(track: str):
     """The SSP probability per qid, for the agent's statistical_baseline tool."""
     p = pd.read_parquet(DATA / f"baselines_{track}.parquet").set_index("qid").ssp
-    return lambda qid: float(p[qid])
+    return lambda qid: float(p.get(qid, float("nan")))
 
 
 if __name__ == "__main__":

@@ -92,7 +92,8 @@ def build_toolbox(questions: pd.DataFrame, track: str, log_path=None,
         def statistical_baseline(snap, q) -> dict:
             """Probability from a simple statistical model fitted on 2024-2025 data, using the three models'
             forecasts and recent observations. Well calibrated on past data; it cannot read the discussions."""
-            return {"probability": round(float(ssp(q["qid"])), 3)}
+            p = float(ssp(q["qid"]))
+            return {"unavailable": "no baseline probability for this day"} if p != p else {"probability": round(p, 3)}
 
     return tb
 

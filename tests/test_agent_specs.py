@@ -48,5 +48,22 @@ def test_budget_blocks_before_cap(tmp_path):
     assert round(b.spent(), 3) == 0.008
 
 
+def test_budget_survives_concurrent_writers(tmp_path):
+    from multiprocessing import Process
+    ledger = tmp_path / "spend.json"
+    procs = [Process(target=_add_many, args=(ledger,)) for _ in range(4)]
+    for p in procs:
+        p.start()
+    for p in procs:
+        p.join()
+    assert round(Budget(ledger, 100).spent(), 6) == round(4 * 50 * 0.001, 6)   # no lost updates
+
+
+def _add_many(ledger):
+    b = Budget(ledger, 100)
+    for _ in range(50):
+        b.add(0.001, "x")
+
+
 def test_cost():
     assert abs(cost_usd({"input_tokens": 1_000_000, "output_tokens": 0}, "claude-haiku-5-5") - 0.10) < 1e-9

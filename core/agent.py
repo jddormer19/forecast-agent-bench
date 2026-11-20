@@ -54,24 +54,50 @@ class BudgetExceeded(RuntimeError):
 
 @dataclass
 class Budget:
-    """Cumulative spend across every run, stored in a ledger file so separate runs share one cap."""
+    """Cumulative spend across every run, stored in a ledger file so separate runs share one cap.
+
+    Reads and updates take an exclusive file lock, so two processes running at once cannot lose each other's
+    updates (a lost update would undercount spend and weaken the cap).
+    """
     ledger: Path
     cap_usd: float
 
+    def _locked(self):
+        import fcntl
+        from contextlib import contextmanager
+
+        @contextmanager
+        def cm():
+            self.ledger.parent.mkdir(parents=True, exist_ok=True)
+            with open(self.ledger.with_suffix(".lock"), "w") as lk:
+                fcntl.flock(lk, fcntl.LOCK_EX)
+                try:
+                    yield
+                finally:
+                    fcntl.flock(lk, fcntl.LOCK_UN)
+        return cm()
+
+    def _read(self) -> dict:
+        return json.loads(self.ledger.read_text()) if self.ledger.exists() else {"spent_usd": 0.0, "by_run": {}}
+
     def spent(self) -> float:
-        return json.loads(self.ledger.read_text())["spent_usd"] if self.ledger.exists() else 0.0
+        with self._locked():
+            return self._read()["spent_usd"]
 
     def check(self, next_estimate_usd: float):
-        if self.spent() + next_estimate_usd > self.cap_usd:
-            raise BudgetExceeded(f"spent ${self.spent():.2f}; next question (~${next_estimate_usd:.3f}) would pass "
+        spent = self.spent()
+        if spent + next_estimate_usd > self.cap_usd:
+            raise BudgetExceeded(f"spent ${spent:.2f}; next request (~${next_estimate_usd:.3f}) would pass "
                                  f"the ${self.cap_usd:.2f} cap")
 
     def add(self, usd: float, label: str):
-        data = json.loads(self.ledger.read_text()) if self.ledger.exists() else {"spent_usd": 0.0, "by_run": {}}
-        data["spent_usd"] = round(data["spent_usd"] + usd, 6)
-        data["by_run"][label] = round(data["by_run"].get(label, 0.0) + usd, 6)
-        self.ledger.parent.mkdir(parents=True, exist_ok=True)
-        self.ledger.write_text(json.dumps(data, indent=2))
+        with self._locked():
+            data = self._read()
+            data["spent_usd"] = round(data["spent_usd"] + usd, 6)
+            data["by_run"][label] = round(data["by_run"].get(label, 0.0) + usd, 6)
+            tmp = self.ledger.with_suffix(".tmp")
+            tmp.write_text(json.dumps(data, indent=2))
+            tmp.replace(self.ledger)
 
 
 class AgentState(TypedDict):
@@ -145,6 +171,8 @@ def build_graph(client: anthropic.AsyncAnthropic, toolbox: ToolBox, tools: list[
                                                      default=str), False
                     except TypeError as e:    # bad arguments from the model
                         content, is_err = f"Invalid arguments: {e}", True
+                    except Exception as e:    # a tool failure goes back to the agent, not up to the runner
+                        content, is_err = f"Tool error: {type(e).__name__}", True
                     calls += 1
                     trace.append({"tool": b.name, "input": b.input, "error": is_err})
                 results.append({"type": "tool_result", "tool_use_id": b.id, "content": content, "is_error": is_err})
@@ -213,8 +241,14 @@ async def run_questions(toolbox: ToolBox, qids: list[str], *, system: str, model
             row.update(probability=st["forecast"]["probability"], forecast=st["forecast"],
                        tool_calls=st["tool_calls"], trace=st["trace"])
         except Exception as e:   # one bad question must not kill a run; it is scored with the fallback
-            row.update(error=f"{type(e).__name__}: {e}",
-                       probability=None if fallback is None else float(fallback(qid)), used_fallback=fallback is not None)
+            fb = None
+            if fallback is not None:
+                try:
+                    fb = float(fallback(qid))
+                    fb = None if fb != fb else fb    # NaN -> None
+                except Exception:
+                    fb = None
+            row.update(error=f"{type(e).__name__}: {e}", probability=fb, used_fallback=fb is not None)
         row.update(usage=usage, cost_usd=round(cost_usd(usage, model), 6), seconds=round(time.time() - t0, 1))
         budget.add(row["cost_usd"], run_label)
         with open(out_path, "a") as f:
