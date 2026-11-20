@@ -23,17 +23,32 @@ class Source:
     name: str
     load: Callable[[], pd.DataFrame]       # must return a frame with a tz-aware UTC `available_at` column
     description: str = ""
-    _frame: pd.DataFrame | None = field(default=None, repr=False)
+    key: str | None = None                 # optional partition column (e.g. a station id) for fast lookups
+    _parts: dict | None = field(default=None, repr=False)
 
-    def frame(self) -> pd.DataFrame:
-        if self._frame is None:
+    def _load(self) -> dict:
+        if self._parts is None:
             df = self.load()
             if "available_at" not in df:
                 raise ValueError(f"source {self.name!r} has no available_at column")
             if df.available_at.dt.tz is None:
                 raise ValueError(f"source {self.name!r}: available_at must be timezone-aware UTC")
-            self._frame = df.sort_values("available_at", kind="stable").reset_index(drop=True)
-        return self._frame
+            df = df.sort_values("available_at", kind="stable").reset_index(drop=True)
+            self._empty = df.iloc[:0]
+            self._parts = ({None: df} if self.key is None else
+                           {k: g.reset_index(drop=True) for k, g in df.groupby(self.key, sort=False)})
+        return self._parts
+
+    def part(self, key=None) -> pd.DataFrame:
+        """Rows for one partition (or all rows if the source is not partitioned), sorted by available_at."""
+        parts = self._load()
+        if self.key is not None and key is None:
+            raise ValueError(f"source {self.name!r} is partitioned by {self.key!r}: pass key=")
+        return parts.get(key, self._empty)
+
+    def frame(self) -> pd.DataFrame:
+        parts = self._load()
+        return parts[None] if self.key is None else pd.concat(parts.values(), ignore_index=True)
 
 
 class Snapshot:
@@ -43,9 +58,9 @@ class Snapshot:
         self.sources, self.t = sources, pd.Timestamp(t)
         self.newest: pd.Timestamp | None = None
 
-    def get(self, name: str) -> pd.DataFrame:
-        df = self.sources[name].frame()
-        cut = df.available_at.searchsorted(self.t, side="right")   # frame is sorted by available_at
+    def get(self, name: str, key=None) -> pd.DataFrame:
+        df = self.sources[name].part(key)
+        cut = df.available_at.searchsorted(self.t, side="right")   # each partition is sorted by available_at
         out = df.iloc[:cut]
         if len(out):
             last = out.available_at.iloc[-1]

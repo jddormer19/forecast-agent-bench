@@ -24,6 +24,18 @@ def test_snapshot_hides_the_future_and_tracks_newest():
     assert snap.newest == ts("2025-01-01 12:00")
 
 
+def test_partitioned_source():
+    src = Source("obs", lambda: pd.DataFrame({
+        "available_at": [ts("2025-01-01 10:00"), ts("2025-01-01 11:00"), ts("2025-01-01 13:00")],
+        "sid": ["A", "B", "A"], "value": [1, 2, 3]}), key="sid")
+    snap = Snapshot({"obs": src}, ts("2025-01-01 12:00"))
+    assert snap.get("obs", key="A").value.tolist() == [1]
+    assert snap.get("obs", key="Z").empty
+    with pytest.raises(ValueError):
+        snap.get("obs")
+    assert len(src.frame()) == 3
+
+
 def test_source_requires_utc_available_at():
     with pytest.raises(ValueError):
         Source("bad", lambda: pd.DataFrame({"x": [1]})).frame()
