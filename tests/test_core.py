@@ -79,6 +79,24 @@ def test_mcp_server_exposes_qid_and_params_only(tmp_path):
     assert tools[0].name == "latest" and set(schema["properties"]) == {"qid", "n"}
 
 
+def test_block_bootstrap_is_wider_when_clusters_are_correlated():
+    from core.scoring import paired_bootstrap
+    rng = np.random.default_rng(1)
+    days = np.repeat(np.arange(60), 10)                       # 10 questions share each day
+    shock = rng.normal(0, 0.2, 60)[days]                       # a shared daily effect
+    y = (rng.random(600) < 0.5).astype(float)
+    a, b = np.clip(0.5 + shock, 0, 1), np.full(600, 0.5)
+    _, lo_iid, hi_iid = paired_bootstrap(a, b, y, n=400)
+    _, lo_blk, hi_blk = paired_bootstrap(a, b, y, n=400, clusters=days)
+    assert (hi_blk - lo_blk) > (hi_iid - lo_iid)
+
+
+def test_holm():
+    from core.scoring import holm
+    assert holm({"H1": 0.01, "H4": 0.04}) == {"H1": True, "H4": True}     # 0.01<=0.025, then 0.04<=0.05
+    assert holm({"H1": 0.03, "H4": 0.04}) == {"H1": False, "H4": False}   # 0.03 > 0.025 stops the procedure
+
+
 def test_scoring():
     y = np.array([1, 0, 1, 0])
     assert brier([1, 0, 1, 0], y) == 0 and brier([0.5] * 4, y) == 0.25

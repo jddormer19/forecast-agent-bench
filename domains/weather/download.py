@@ -204,7 +204,7 @@ def download_mos(out: Path = DATA) -> pd.DataFrame:
                       "sts": f"{a.isoformat()}T00:00Z", "ets": f"{(b + timedelta(days=1)).isoformat()}T00:00Z"}
             df = pd.read_csv(io.StringIO(client.fetch("https://mesonet.agron.iastate.edu/cgi-bin/request/mos.py", params)))
             if len(df):
-                frames.append(df[["runtime", "ftime", "p06", "p12"]].assign(sid=st.sid))
+                frames.append(df[["runtime", "ftime", "n_x", "p06", "p12"]].assign(sid=st.sid))
         print(f"mos {st.sid}: done ({client.network_calls} calls)")
     df = pd.concat(frames, ignore_index=True).drop_duplicates()
     _save(df, out / "mos.parquet")
