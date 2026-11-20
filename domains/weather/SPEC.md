@@ -266,6 +266,12 @@ item 1 is replaced by this rule.
   step, two-sided 0.025, 80% power): temperature 0.0123 (n = 1,321), precipitation 0.0059 (n = 1,271).
   Prompts, tools and code are frozen at git tag `holdout-freeze` before any holdout question is run; the runner
   answers 6 questions concurrently (no effect on any single answer). Run order follows 10.1.
+- 2026-11-20: **holdout run and scored once.** The chain finished at 17:17 CT (10,000+ answers, 1 failure, an
+  Opus question scored with SSP's probability, per 10.6; total spend $41.99). Before scoring, the scorer was
+  extended to find every run file and compute every comparison named in sections 6, 9 and 10 (commit 2966e51).
+  Scored at 23:18 UTC with no retry (tag `holdout-scored`). Co-primary, Holm 0.05: H4 supported (precipitation,
+  agent better, p = 0.002); H1 not supported (temperature: significant difference in the opposite direction,
+  agent worse, p = 0.011). Full results: `domains/weather/RESULTS.md` and `holdout_results.json`.
 - 2026-11-19: **leak check (10.7) failed as specified, and was corrected.** Result v1
   (`data/weather/checks/leak_check_v1_failed.json`): temperature values crediting the latest matching run were
   "unsafe" for 1.3-2.4% of values (GFS 2.35%, ICON 1.33%, ECMWF 2.0%) and 33% of ECMWF values matched no run.
