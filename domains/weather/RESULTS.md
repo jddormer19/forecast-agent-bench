@@ -55,7 +55,7 @@ better; the other eight are not distinguishable from 0.
 | Sonnet 5.5 | 0.0720 | 0.0894 | 21.43 / 21.24 |
 | Opus 5.5 | 0.0721 | 0.0806 | 80.67 / 64.75 |
 
-On temperature, Sonnet and Opus are both significantly better than Haiku (about -0.019) and tie SSP; on
+On temperature, Sonnet and Opus are both significantly better than Haiku (about -0.019) and land within 0.0023 of SSP on these questions (not tested against SSP); on
 precipitation, no model is distinguishable from Haiku. One Opus question failed and was scored with SSP's probability.
 
 ## Recall probe (no tools, no data; 200 questions per track and period)

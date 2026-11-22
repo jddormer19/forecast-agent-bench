@@ -7,16 +7,16 @@ minus Brier(A2, without), per question; positive means reading the discussion ma
 ## Summary
 
 On temperature the agent with discussions (A1) scored 0.0796 against 0.0706 without them (A2): +0.0091 per question,
-+12.0 Brier in total over 1,321 primary-holdout questions. Three patterns explain most of it.
++12.0 Brier in total over 1,321 primary-holdout questions. Three patterns are associated with most of it (exploratory: keyword patterns plus reading the agent's reasoning).
 
-1. **Area-wide statements applied to a single station.** NWS discussions describe a whole forecast area ("max temps
-   5-10 degrees below normal", "highs in the 70s over most of the area"). The agent mapped those onto one airport's
+1. **Area-wide statements applied to a single station.** NWS discussions describe a whole forecast area (for example, highs
+   several degrees below normal, or highs in the 70s over most of the area). The agent mapped those onto one airport's
    normal. The 143 answers (11%) that cite such a statement carry **42% of the total harm** (+5.1).
 2. **Routine features read as news.** At Los Angeles (LAX) a marine layer is the normal summer state and is already in
-   the models and the statistical baseline. The agent read "deep marine layer, coastal eddy" as a reason to cool the
-   forecast. LAX alone is **53% of the total harm** (+6.4 from 129 questions), although the high reached normal on 84%
+   the models and the statistical baseline. In the reviewed answers the agent read the discussion's marine-layer and coastal-eddy
+   wording as a reason to cool the forecast. LAX alone is **53% of the total harm** (+6.4 from 129 questions), although the high reached normal on 84%
    of LAX days in Jul-Nov 2026.
-3. **Double counting.** Forecasters write the discussion from the same model guidance the baseline uses. In 45% of the
+3. **Double counting.** Forecasters write the discussion from much the same model guidance the baseline uses (a plausible mechanism, not tested here). In 45% of the
    most-harmed answers the agent says it trusts the text over the models or the baseline ("I weight the forecasters'
    written reasoning more heavily"; "the statistical baseline cannot read the discussion"), against 22% of the
    most-helped. The prompt's instruction to move away from the baseline "only for a concrete reason" did not stop
@@ -60,7 +60,7 @@ harm halves (+0.0047 per question) but stays positive.
 
 Fronts and storms are not a failure signal by themselves: the agent mentions them about as often when it is right.
 
-## Examples (agent's own words)
+## Examples (Claude Haiku 5.5 output, quoted from the agent's answers)
 
 - **LAX, Aug 12, normal 76°F, reached.** SSP 0.75, without discussion 0.72, with discussion **0.12**: "The forecast
   office expects the high at LAX to fall well below the 76°F normal ... Reaching 76°F would need the marine layer to
@@ -68,8 +68,8 @@ Fronts and storms are not a failure signal by themselves: the agent mentions the
 - **LAX, Aug 31, normal 77°F, reached.** SSP 0.90, without 0.80, with **0.30**: "I weight the forecasters' written
   reasoning more heavily because they have more information than the raw model output, and the statistical baseline
   (0.899) appears not to reflect the discussed cooling."
-- **Chicago, Sep 9, normal 78°F, reached.** SSP 0.94, without 0.85, with **0.40**: the discussion's "highs in the 70s over
-  most of the area" was applied to O'Hare.
+- **Chicago, Sep 9, normal 78°F, reached.** SSP 0.94, without 0.85, with **0.40**: the discussion's area-wide statement
+  about highs in the 70s was applied to O'Hare.
 
 ## What this suggests (to test on new days, not on this spent holdout)
 
