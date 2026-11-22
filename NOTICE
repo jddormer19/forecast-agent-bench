@@ -1,0 +1,11 @@
+The source code in this repository is licensed under the MIT License (see LICENSE).
+
+Data files and data-derived results (for example domains/weather/benchmark_manifest.json, holdout_results.json and the
+charts in docs/img) are NOT covered by the MIT License:
+
+- Forecast-derived values: Open-Meteo.com, ECMWF and DWD (CC BY 4.0, https://creativecommons.org/licenses/by/4.0/) and
+  NOAA/NCEP; see README "Data sources and attribution" for the required credits and the modifications made.
+- Observations, normals, MOS guidance and NWS text are works of the U.S. Government (NOAA/NWS/NCEI) and are not subject
+  to copyright protection in the United States (17 U.S.C. 105). This is not official NWS material.
+
+ECMWF and the other providers accept no liability for errors or omissions in the data.
