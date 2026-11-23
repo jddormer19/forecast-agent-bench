@@ -18,7 +18,7 @@ On temperature the agent with discussions (A1) scored 0.0796 against 0.0706 with
    of LAX days in Jul-Nov 2026.
 3. **Double counting.** Forecasters write the discussion from much the same model guidance the baseline uses (a plausible mechanism, not tested here). In 45% of the
    most-harmed answers the agent says it trusts the text over the models or the baseline ("I weight the forecasters'
-   written reasoning more heavily"; "the statistical baseline cannot read the discussion"), against 22% of the
+   written reasoning more heavily"; "cannot read the discussion"), against 22% of the
    most-helped. The prompt's instruction to move away from the baseline "only for a concrete reason" did not stop
    this: nearly every discussion contains something that reads as concrete.
 
@@ -71,13 +71,14 @@ Fronts and storms are not a failure signal by themselves: the agent mentions the
 - **Chicago, Sep 9, normal 78°F, reached.** SSP 0.94, without 0.85, with **0.40**: the discussion's area-wide statement
   about highs in the 70s was applied to O'Hare.
 
-## Our own tool description primed the failure
+## Our own tool description may have primed the failure
 
-Part of the double counting traces to this project's wording, not only to the model. The `statistical_baseline`
+Part of the double counting may trace to this project's wording, not only to the model (the wording was never
+ablated, so this is a hypothesis). The `statistical_baseline`
 tool tells the agent the baseline is "well calibrated on past data; it cannot read the discussions" (`tools.py`),
 and the temperature prompt describes discussions as explaining what "change[s] the afternoon high"
-(`run_agent.py`). The agent repeated that argument when it overruled the baseline ("the statistical baseline
-cannot read the discussion"). The wording stays as frozen for this holdout; a neutral description is the first
+(`run_agent.py`). The agent repeated that argument when it overruled the baseline: "cannot read the discussion"
+appears in 49 of its primary-holdout temperature answers. The wording stays as frozen for this holdout; a neutral description is the first
 change to test on new days.
 
 ## What this suggests (to test on new days, not on this spent holdout)

@@ -95,19 +95,20 @@ reliability error and higher resolution are better).
 | MOS-based | 0.0883 | 0.2856 | 0.341 | 0.0028 | 0.0651 |
 | Climatology | 0.1340 | 0.4289 | 0.000 | 0.0015 | 0.0174 |
 
-- **Temperature: the agent ranks days as well as SSP but is miscalibrated.** Resolution 0.1422 vs 0.1424; reliability error 0.0077 vs 0.0017. The reliability curve sits above the diagonal between about 0.4 and 0.9: when the agent said around 50%, the high reached normal about 77% of the time. It was systematically too pessimistic, which matches the downward pushes in ERROR_ANALYSIS.md. Without the discussions its reliability error falls to 0.0054.
-- **Precipitation: the gain is resolution.** 0.0785 vs 0.0707 for SSP, with similar reliability error (0.0032 vs 0.0029): the agent separates wet from dry days better.
+- **Temperature: the agent separates days about as well as SSP (similar resolution) but is miscalibrated.** Resolution 0.1422 vs 0.1424; reliability error 0.0077 vs 0.0017. The reliability curve sits above the diagonal between about 0.4 and 0.9: when the agent said about 52% (n = 48 questions in that bin), the high reached normal 77% of the time. It was systematically too pessimistic, which matches the downward pushes in ERROR_ANALYSIS.md. Without the discussions its reliability error falls to 0.0054.
+- **Precipitation: the gain is resolution.** 0.0785 vs 0.0707 for SSP, with similar reliability error (0.0032 vs 0.0029): the agent separates wet from dry days better (point estimates; no interval was computed for the decomposition).
 - By station (temperature), the agent's reliability error is largest at LAX (0.0583 vs SSP 0.0345) and MIA (0.0340 vs 0.0063). Per-bin tables and every station: `calibration_results.json`. Chart: `docs/img/reliability.png`.
 
 ## Pre-registered checks and deviations
 
-Every check the SPEC promised, what happened, and the evidence. Two were missed before the agent runs and done
-afterwards; they can only confirm or question the data, not change a result.
+Every check the SPEC promised, what happened, and the evidence. Three were not done as specified before the agent
+runs: the climate-report spot-check and the secondary metrics were done afterwards, and the MOS publication time was
+argued from a margin rather than measured. None of them can change a result.
 
 | SPEC | Check | Status | Evidence |
 | --- | --- | --- | --- |
 | 8.1, 10.7 | Forecast leak check against exact model runs | Done before any agent run. v1 failed; diagnosed; v2 passed 6/6 | SPEC change log 2026-11-19; `checks.py`, `leak_diag.py` |
-| 8.2, 9 | Spot-check 20 temperature and 20 precipitation outcomes against NWS climate reports | **Missed before the runs; done 2026-11-22 after scoring.** Final climate report found 20/20 and 20/20; observed values match ACIS 20/20 and 20/20; outcomes match 20/20 and 20/20 | `spot_check.py`, `spot_check_results.json` |
+| 8.2, 9 | Spot-check 20 temperature and 20 precipitation outcomes against NWS climate reports | **Missed before the runs; done 2026-11-22 after scoring, automated (the SPEC said by hand).** Final climate report found 20/20 and 20/20; observed values match ACIS 20/20 and 20/20; outcomes match 20/20 and 20/20 | `spot_check.py`, `spot_check_results.json` |
 | 8.3 | Overnight window matches the climate day (local standard time) | Done in code before the runs, covered by tests | `climate_day_start_utc`; `tests/test_build_benchmark.py` (standard time all year); `tests/test_sources.py` |
 | 8.4 | Baseline sanity: SSP beats climatology on dev | Passed (dev blocks 2-6: temperature 0.0796 vs 0.2400; precipitation 0.0734 vs 0.1369) | `score.py` dev scoring |
 | 9 | Multi-day accumulation flags excluded | Done in code; 5 precipitation outcomes excluded (with missing values) | `parse_pcpn`; `tests/test_build_benchmark.py::test_parsers`; manifest |
@@ -120,8 +121,9 @@ Other deviations and clarifications:
 - **The scorer was written after the freeze** (commit 2966e51, before the one scoring run). It implements the tests
   SPEC 6, 9 and 10.5 already named; a lock file blocks a second run.
 - **Minimum detectable effect.** The recorded temperature MDE (0.0123) used the dev paired-difference SD (0.1297,
-  design effect 1.26) from 200 dev questions. The holdout differences varied less: the realized 95% CI half-width
-  was about 0.005, so the observed +0.0065 was significant although smaller than the planned MDE.
+  design effect 1.26) from 200 dev questions. The holdout paired difference had a smaller standard error than the dev
+  estimate implied (planned 95% half-width about 0.0079, realized 0.0050), so the observed +0.0065 (the agent
+  worse) was significant although smaller than the planned MDE.
 - **The design review behind Amendment A was done by an AI reviewer** (a Claude agent prompted as a skeptical
   senior ML hiring manager), not a person; the author decided which changes to adopt.
 - **The agent budget cap was raised from $30 to $55** before any holdout run (SPEC change log, 2026-11-20).

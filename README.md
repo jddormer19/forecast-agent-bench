@@ -66,9 +66,9 @@ The pre-registered secondary metrics (computed after scoring, so exploratory in 
 unchanged) split the Brier score into reliability and resolution:
 
 - **Temperature:** the agent separates warm from cool days about as well as the baseline (resolution 0.1422 vs
-  0.1424) but is worse calibrated (reliability error 0.0077 vs 0.0017). It was too pessimistic: when it said about
-  52%, the high reached normal 77% of the time.
-- **Precipitation:** the agent's edge is resolution (0.0785 vs 0.0707) at similar calibration.
+  0.1424) but is worse calibrated (reliability error 0.0077 vs 0.0017). Between about 0.4 and 0.9 it was too
+  pessimistic: when it said about 52% (48 questions), the high reached normal 77% of the time.
+- **Precipitation:** the agent's edge is resolution (0.0785 vs 0.0707, point estimates) at similar calibration.
 
 ![Reliability curves](docs/img/reliability.png)
 
@@ -140,8 +140,9 @@ flowchart LR
 - The error analysis, ablations and model comparison are exploratory; fixes they suggest need a new forward test on
   days after Nov 15, 2026, since this holdout is spent.
 - The leak check verifies a weekly sample of days at five stations, not every value.
-- Two pre-registered checks (the climate-report spot-check and the calibration metrics) were done after scoring,
-  not before; both are reported in [RESULTS.md](domains/weather/RESULTS.md#pre-registered-checks-and-deviations).
+- Three pre-registered checks were not done as specified: the climate-report spot-check and the calibration
+  metrics were done after scoring, and the MOS publication time was argued from a margin, not measured; all are
+  reported in [RESULTS.md](domains/weather/RESULTS.md#pre-registered-checks-and-deviations).
 
 ## Reproduce
 
@@ -168,7 +169,8 @@ data and products of the European Centre for Medium-Range Weather Forecasts (ECM
 data is published under a Creative Commons Attribution 4.0 International (CC BY 4.0). ICON forecast data: Source:
 Deutscher Wetterdienst (DWD), CC BY 4.0. GFS forecast data: NOAA/NCEP (public domain). Observed temperatures,
 precipitation and 1991-2020 normals: NOAA NCEI, retrieved via the Applied Climate Information System (ACIS), NOAA
-Regional Climate Centers. NWS Area Forecast Discussions, hourly observations and GFS MOS guidance retrieved from the
+Regional Climate Centers. NWS Area Forecast Discussions, daily climate reports (used for the outcome spot-check), hourly observations and GFS
+MOS guidance retrieved from the
 [Iowa Environmental Mesonet](https://mesonet.agron.iastate.edu/), Iowa State University.
 
 This project is not affiliated with or endorsed by NOAA/NWS, ECMWF, DWD, Open-Meteo, the Regional Climate Centers,
