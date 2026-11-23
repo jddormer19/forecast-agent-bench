@@ -1,5 +1,7 @@
 # forecast-agent-bench
 
+[![tests](https://github.com/jddormer19/forecast-agent-bench/actions/workflows/tests.yml/badge.svg)](https://github.com/jddormer19/forecast-agent-bench/actions/workflows/tests.yml)
+
 **Can an LLM agent that reads forecasters' written reasoning beat classical statistical forecasting?**
 
 A pre-registered benchmark that pits a Claude agent with point-in-time tools against a strong statistical baseline,
@@ -58,6 +60,18 @@ of the baseline on these questions (not tested against it), at about 10x and 36x
 model is distinguishable from Haiku, which costs about $2 per 1,000 forecasts. Haiku's cost is from its full holdout
 run.
 
+### Calibration: ranking versus confidence
+
+The pre-registered secondary metrics (computed after scoring, so exploratory in timing; the primary result is
+unchanged) split the Brier score into reliability and resolution:
+
+- **Temperature:** the agent separates warm from cool days about as well as the baseline (resolution 0.1422 vs
+  0.1424) but is worse calibrated (reliability error 0.0077 vs 0.0017). It was too pessimistic: when it said about
+  52%, the high reached normal 77% of the time.
+- **Precipitation:** the agent's edge is resolution (0.0785 vs 0.0707) at similar calibration.
+
+![Reliability curves](docs/img/reliability.png)
+
 ### Did the model just remember the weather?
 
 Not measurably. With no tools and no data, it scores about as well as climatology both before and after its training
@@ -83,7 +97,7 @@ cutoff (temperature: 0.2321 vs 0.2321 after the cutoff).
 - **Stronger baselines than a strawman.** The statistical baseline (SSP) is at least as good as a baseline calibrated
   from NWS GFS MOS guidance (better on temperature, tied on precipitation). An extraction baseline tests whether the
   agent merely copies numbers stated in the discussion. The post-cutoff holdout, the MOS and extraction baselines,
-  the recall probe, Holm correction and the block bootstrap were added in a dated amendment after a design review,
+  the recall probe, Holm correction and the block bootstrap were added in a dated amendment after a design review by an AI reviewer agent,
   before any agent ran; the discussion and baseline-tool ablations were in the original SPEC.
 - **Paired statistics.** All comparisons are on the same questions, with a date-block bootstrap (questions on one date
   share weather). The minimum detectable effects were recorded before the holdout ran.
@@ -115,7 +129,8 @@ flowchart LR
 - `core/scoring.py`: Brier, log loss, paired and block bootstrap, Holm, Brier skill.
 - `domains/weather/`: downloaders, benchmark builder, point-in-time sources, the agent's tools, baselines, scorer,
   leak check, error analysis, README charts.
-- 30 tests (`pytest`).
+- 36 tests (`pytest`), run on every push by GitHub Actions; no downloaded data needed. They include the per-source
+  availability rules (`tests/test_sources.py`), the real leak boundary.
 
 ## Limitations
 
@@ -125,6 +140,8 @@ flowchart LR
 - The error analysis, ablations and model comparison are exploratory; fixes they suggest need a new forward test on
   days after Nov 15, 2026, since this holdout is spent.
 - The leak check verifies a weekly sample of days at five stations, not every value.
+- Two pre-registered checks (the climate-report spot-check and the calibration metrics) were done after scoring,
+  not before; both are reported in [RESULTS.md](domains/weather/RESULTS.md#pre-registered-checks-and-deviations).
 
 ## Reproduce
 

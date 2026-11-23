@@ -1,0 +1,1175 @@
+{
+ "note": "Pre-registered secondary metrics (SPEC 6, 10.5), computed 2026-11-22 after the one-time scoring; primary results unchanged. Bins of width 0.1; bins with fewer than 10 questions are left out of the plot.",
+ "temp": {
+  "n_questions": 1321,
+  "base_rate": 0.69,
+  "systems": {
+   "A1": {
+    "label": "Agent, all tools",
+    "n": 1321,
+    "log_loss": 0.2685,
+    "skill_vs_climatology": 0.642,
+    "brier": 0.0796,
+    "reliability": 0.0077,
+    "resolution": 0.1422,
+    "uncertainty": 0.214,
+    "within_bin": -0.0,
+    "reliability_table": [
+     {
+      "bin": "0.0-0.1",
+      "n": 170,
+      "mean_forecast": 0.04,
+      "observed": 0.012
+     },
+     {
+      "bin": "0.1-0.2",
+      "n": 75,
+      "mean_forecast": 0.131,
+      "observed": 0.133
+     },
+     {
+      "bin": "0.2-0.3",
+      "n": 62,
+      "mean_forecast": 0.224,
+      "observed": 0.21
+     },
+     {
+      "bin": "0.3-0.4",
+      "n": 81,
+      "mean_forecast": 0.33,
+      "observed": 0.358
+     },
+     {
+      "bin": "0.4-0.5",
+      "n": 58,
+      "mean_forecast": 0.425,
+      "observed": 0.552
+     },
+     {
+      "bin": "0.5-0.6",
+      "n": 48,
+      "mean_forecast": 0.523,
+      "observed": 0.771
+     },
+     {
+      "bin": "0.6-0.7",
+      "n": 68,
+      "mean_forecast": 0.626,
+      "observed": 0.794
+     },
+     {
+      "bin": "0.7-0.8",
+      "n": 82,
+      "mean_forecast": 0.738,
+      "observed": 0.805
+     },
+     {
+      "bin": "0.8-0.9",
+      "n": 202,
+      "mean_forecast": 0.843,
+      "observed": 0.955
+     },
+     {
+      "bin": "0.9-1.0",
+      "n": 475,
+      "mean_forecast": 0.948,
+      "observed": 1.0
+     }
+    ]
+   },
+   "A2": {
+    "label": "Agent, no discussion",
+    "n": 1321,
+    "log_loss": 0.2443,
+    "skill_vs_climatology": 0.682,
+    "brier": 0.0706,
+    "reliability": 0.0054,
+    "resolution": 0.1488,
+    "uncertainty": 0.214,
+    "within_bin": -0.0001,
+    "reliability_table": [
+     {
+      "bin": "0.0-0.1",
+      "n": 165,
+      "mean_forecast": 0.04,
+      "observed": 0.0
+     },
+     {
+      "bin": "0.1-0.2",
+      "n": 68,
+      "mean_forecast": 0.133,
+      "observed": 0.088
+     },
+     {
+      "bin": "0.2-0.3",
+      "n": 64,
+      "mean_forecast": 0.228,
+      "observed": 0.141
+     },
+     {
+      "bin": "0.3-0.4",
+      "n": 62,
+      "mean_forecast": 0.333,
+      "observed": 0.306
+     },
+     {
+      "bin": "0.4-0.5",
+      "n": 61,
+      "mean_forecast": 0.429,
+      "observed": 0.541
+     },
+     {
+      "bin": "0.5-0.6",
+      "n": 47,
+      "mean_forecast": 0.53,
+      "observed": 0.702
+     },
+     {
+      "bin": "0.6-0.7",
+      "n": 63,
+      "mean_forecast": 0.626,
+      "observed": 0.714
+     },
+     {
+      "bin": "0.7-0.8",
+      "n": 77,
+      "mean_forecast": 0.741,
+      "observed": 0.818
+     },
+     {
+      "bin": "0.8-0.9",
+      "n": 166,
+      "mean_forecast": 0.842,
+      "observed": 0.946
+     },
+     {
+      "bin": "0.9-1.0",
+      "n": 548,
+      "mean_forecast": 0.947,
+      "observed": 0.996
+     }
+    ]
+   },
+   "A3": {
+    "label": "Agent, no baseline tool",
+    "n": 1321,
+    "log_loss": 0.3373,
+    "skill_vs_climatology": 0.55,
+    "brier": 0.1,
+    "reliability": 0.0253,
+    "resolution": 0.1393,
+    "uncertainty": 0.214,
+    "within_bin": -0.0001,
+    "reliability_table": [
+     {
+      "bin": "0.0-0.1",
+      "n": 107,
+      "mean_forecast": 0.051,
+      "observed": 0.009
+     },
+     {
+      "bin": "0.1-0.2",
+      "n": 91,
+      "mean_forecast": 0.123,
+      "observed": 0.077
+     },
+     {
+      "bin": "0.2-0.3",
+      "n": 96,
+      "mean_forecast": 0.236,
+      "observed": 0.188
+     },
+     {
+      "bin": "0.3-0.4",
+      "n": 112,
+      "mean_forecast": 0.326,
+      "observed": 0.339
+     },
+     {
+      "bin": "0.4-0.5",
+      "n": 95,
+      "mean_forecast": 0.425,
+      "observed": 0.653
+     },
+     {
+      "bin": "0.5-0.6",
+      "n": 57,
+      "mean_forecast": 0.548,
+      "observed": 0.789
+     },
+     {
+      "bin": "0.6-0.7",
+      "n": 149,
+      "mean_forecast": 0.631,
+      "observed": 0.872
+     },
+     {
+      "bin": "0.7-0.8",
+      "n": 153,
+      "mean_forecast": 0.732,
+      "observed": 0.98
+     },
+     {
+      "bin": "0.8-0.9",
+      "n": 211,
+      "mean_forecast": 0.838,
+      "observed": 0.995
+     },
+     {
+      "bin": "0.9-1.0",
+      "n": 250,
+      "mean_forecast": 0.93,
+      "observed": 1.0
+     }
+    ]
+   },
+   "ssp": {
+    "label": "SSP baseline",
+    "n": 1321,
+    "log_loss": 0.2318,
+    "skill_vs_climatology": 0.671,
+    "brier": 0.0731,
+    "reliability": 0.0017,
+    "resolution": 0.1424,
+    "uncertainty": 0.214,
+    "within_bin": -0.0002,
+    "reliability_table": [
+     {
+      "bin": "0.0-0.1",
+      "n": 197,
+      "mean_forecast": 0.03,
+      "observed": 0.015
+     },
+     {
+      "bin": "0.1-0.2",
+      "n": 63,
+      "mean_forecast": 0.152,
+      "observed": 0.159
+     },
+     {
+      "bin": "0.2-0.3",
+      "n": 51,
+      "mean_forecast": 0.247,
+      "observed": 0.235
+     },
+     {
+      "bin": "0.3-0.4",
+      "n": 34,
+      "mean_forecast": 0.347,
+      "observed": 0.382
+     },
+     {
+      "bin": "0.4-0.5",
+      "n": 48,
+      "mean_forecast": 0.454,
+      "observed": 0.375
+     },
+     {
+      "bin": "0.5-0.6",
+      "n": 45,
+      "mean_forecast": 0.557,
+      "observed": 0.644
+     },
+     {
+      "bin": "0.6-0.7",
+      "n": 49,
+      "mean_forecast": 0.65,
+      "observed": 0.776
+     },
+     {
+      "bin": "0.7-0.8",
+      "n": 54,
+      "mean_forecast": 0.751,
+      "observed": 0.648
+     },
+     {
+      "bin": "0.8-0.9",
+      "n": 101,
+      "mean_forecast": 0.857,
+      "observed": 0.822
+     },
+     {
+      "bin": "0.9-1.0",
+      "n": 679,
+      "mean_forecast": 0.979,
+      "observed": 0.987
+     }
+    ]
+   },
+   "mos_based": {
+    "label": "MOS-based",
+    "n": 1321,
+    "log_loss": 0.2602,
+    "skill_vs_climatology": 0.633,
+    "brier": 0.0816,
+    "reliability": 0.0004,
+    "resolution": 0.1326,
+    "uncertainty": 0.214,
+    "within_bin": -0.0002,
+    "reliability_table": [
+     {
+      "bin": "0.0-0.1",
+      "n": 190,
+      "mean_forecast": 0.035,
+      "observed": 0.021
+     },
+     {
+      "bin": "0.1-0.2",
+      "n": 49,
+      "mean_forecast": 0.163,
+      "observed": 0.143
+     },
+     {
+      "bin": "0.2-0.3",
+      "n": 58,
+      "mean_forecast": 0.278,
+      "observed": 0.31
+     },
+     {
+      "bin": "0.4-0.5",
+      "n": 74,
+      "mean_forecast": 0.432,
+      "observed": 0.365
+     },
+     {
+      "bin": "0.6-0.7",
+      "n": 103,
+      "mean_forecast": 0.6,
+      "observed": 0.592
+     },
+     {
+      "bin": "0.7-0.8",
+      "n": 98,
+      "mean_forecast": 0.748,
+      "observed": 0.724
+     },
+     {
+      "bin": "0.8-0.9",
+      "n": 115,
+      "mean_forecast": 0.854,
+      "observed": 0.861
+     },
+     {
+      "bin": "0.9-1.0",
+      "n": 634,
+      "mean_forecast": 0.977,
+      "observed": 0.984
+     }
+    ]
+   },
+   "climatology": {
+    "label": "Climatology",
+    "n": 1321,
+    "log_loss": 0.636,
+    "skill_vs_climatology": 0.0,
+    "brier": 0.2221,
+    "reliability": 0.0175,
+    "resolution": 0.0077,
+    "uncertainty": 0.214,
+    "within_bin": -0.0018,
+    "reliability_table": [
+     {
+      "bin": "0.3-0.4",
+      "n": 71,
+      "mean_forecast": 0.335,
+      "observed": 0.746
+     },
+     {
+      "bin": "0.4-0.5",
+      "n": 260,
+      "mean_forecast": 0.455,
+      "observed": 0.635
+     },
+     {
+      "bin": "0.5-0.6",
+      "n": 247,
+      "mean_forecast": 0.541,
+      "observed": 0.538
+     },
+     {
+      "bin": "0.6-0.7",
+      "n": 289,
+      "mean_forecast": 0.66,
+      "observed": 0.723
+     },
+     {
+      "bin": "0.7-0.8",
+      "n": 333,
+      "mean_forecast": 0.748,
+      "observed": 0.775
+     },
+     {
+      "bin": "0.8-0.9",
+      "n": 121,
+      "mean_forecast": 0.875,
+      "observed": 0.769
+     }
+    ]
+   }
+  },
+  "by_station": {
+   "ATL": {
+    "n": 136,
+    "A1": {
+     "brier": 0.0611,
+     "reliability": 0.0107,
+     "resolution": 0.118,
+     "uncertainty": 0.1678,
+     "within_bin": 0.0006
+    },
+    "ssp": {
+     "brier": 0.051,
+     "reliability": 0.0051,
+     "resolution": 0.1205,
+     "uncertainty": 0.1678,
+     "within_bin": -0.0013
+    }
+   },
+   "BOS": {
+    "n": 127,
+    "A1": {
+     "brier": 0.067,
+     "reliability": 0.0052,
+     "resolution": 0.1867,
+     "uncertainty": 0.2499,
+     "within_bin": -0.0013
+    },
+    "ssp": {
+     "brier": 0.0565,
+     "reliability": 0.008,
+     "resolution": 0.2015,
+     "uncertainty": 0.2499,
+     "within_bin": 0.0001
+    }
+   },
+   "DEN": {
+    "n": 135,
+    "A1": {
+     "brier": 0.0736,
+     "reliability": 0.0187,
+     "resolution": 0.1191,
+     "uncertainty": 0.1728,
+     "within_bin": 0.0011
+    },
+    "ssp": {
+     "brier": 0.0797,
+     "reliability": 0.0116,
+     "resolution": 0.1009,
+     "uncertainty": 0.1728,
+     "within_bin": -0.0039
+    }
+   },
+   "DFW": {
+    "n": 135,
+    "A1": {
+     "brier": 0.0284,
+     "reliability": 0.0083,
+     "resolution": 0.0952,
+     "uncertainty": 0.1156,
+     "within_bin": -0.0003
+    },
+    "ssp": {
+     "brier": 0.0269,
+     "reliability": 0.0047,
+     "resolution": 0.094,
+     "uncertainty": 0.1156,
+     "within_bin": 0.0006
+    }
+   },
+   "LAX": {
+    "n": 129,
+    "A1": {
+     "brier": 0.1331,
+     "reliability": 0.0583,
+     "resolution": 0.0572,
+     "uncertainty": 0.131,
+     "within_bin": 0.0011
+    },
+    "ssp": {
+     "brier": 0.0842,
+     "reliability": 0.0345,
+     "resolution": 0.0816,
+     "uncertainty": 0.131,
+     "within_bin": 0.0004
+    }
+   },
+   "MIA": {
+    "n": 137,
+    "A1": {
+     "brier": 0.0918,
+     "reliability": 0.034,
+     "resolution": 0.0818,
+     "uncertainty": 0.1397,
+     "within_bin": -0.0002
+    },
+    "ssp": {
+     "brier": 0.0836,
+     "reliability": 0.0063,
+     "resolution": 0.0645,
+     "uncertainty": 0.1397,
+     "within_bin": 0.0021
+    }
+   },
+   "NYC": {
+    "n": 127,
+    "A1": {
+     "brier": 0.0803,
+     "reliability": 0.0105,
+     "resolution": 0.1804,
+     "uncertainty": 0.2492,
+     "within_bin": 0.0009
+    },
+    "ssp": {
+     "brier": 0.0879,
+     "reliability": 0.018,
+     "resolution": 0.1788,
+     "uncertainty": 0.2492,
+     "within_bin": -0.0006
+    }
+   },
+   "ORD": {
+    "n": 125,
+    "A1": {
+     "brier": 0.0839,
+     "reliability": 0.0169,
+     "resolution": 0.1768,
+     "uncertainty": 0.2429,
+     "within_bin": 0.0009
+    },
+    "ssp": {
+     "brier": 0.0916,
+     "reliability": 0.011,
+     "resolution": 0.1619,
+     "uncertainty": 0.2429,
+     "within_bin": -0.0004
+    }
+   },
+   "PHX": {
+    "n": 138,
+    "A1": {
+     "brier": 0.0725,
+     "reliability": 0.0117,
+     "resolution": 0.1588,
+     "uncertainty": 0.2198,
+     "within_bin": -0.0001
+    },
+    "ssp": {
+     "brier": 0.0661,
+     "reliability": 0.0198,
+     "resolution": 0.1731,
+     "uncertainty": 0.2198,
+     "within_bin": -0.0003
+    }
+   },
+   "SEA": {
+    "n": 132,
+    "A1": {
+     "brier": 0.1073,
+     "reliability": 0.0174,
+     "resolution": 0.1586,
+     "uncertainty": 0.2498,
+     "within_bin": -0.0013
+    },
+    "ssp": {
+     "brier": 0.1065,
+     "reliability": 0.0177,
+     "resolution": 0.1601,
+     "uncertainty": 0.2498,
+     "within_bin": -0.0009
+    }
+   }
+  }
+ },
+ "precip": {
+  "n_questions": 1271,
+  "base_rate": 0.185,
+  "systems": {
+   "A1p": {
+    "label": "Agent, all tools",
+    "n": 1271,
+    "log_loss": 0.2452,
+    "skill_vs_climatology": 0.442,
+    "brier": 0.0748,
+    "reliability": 0.0032,
+    "resolution": 0.0785,
+    "uncertainty": 0.1507,
+    "within_bin": -0.0006,
+    "reliability_table": [
+     {
+      "bin": "0.0-0.1",
+      "n": 718,
+      "mean_forecast": 0.033,
+      "observed": 0.008
+     },
+     {
+      "bin": "0.1-0.2",
+      "n": 112,
+      "mean_forecast": 0.13,
+      "observed": 0.08
+     },
+     {
+      "bin": "0.2-0.3",
+      "n": 83,
+      "mean_forecast": 0.234,
+      "observed": 0.217
+     },
+     {
+      "bin": "0.3-0.4",
+      "n": 78,
+      "mean_forecast": 0.33,
+      "observed": 0.308
+     },
+     {
+      "bin": "0.4-0.5",
+      "n": 46,
+      "mean_forecast": 0.42,
+      "observed": 0.283
+     },
+     {
+      "bin": "0.5-0.6",
+      "n": 38,
+      "mean_forecast": 0.523,
+      "observed": 0.289
+     },
+     {
+      "bin": "0.6-0.7",
+      "n": 49,
+      "mean_forecast": 0.628,
+      "observed": 0.612
+     },
+     {
+      "bin": "0.7-0.8",
+      "n": 53,
+      "mean_forecast": 0.736,
+      "observed": 0.717
+     },
+     {
+      "bin": "0.8-0.9",
+      "n": 55,
+      "mean_forecast": 0.83,
+      "observed": 0.909
+     },
+     {
+      "bin": "0.9-1.0",
+      "n": 39,
+      "mean_forecast": 0.93,
+      "observed": 0.923
+     }
+    ]
+   },
+   "A2p": {
+    "label": "Agent, no discussion",
+    "n": 1271,
+    "log_loss": 0.2533,
+    "skill_vs_climatology": 0.422,
+    "brier": 0.0775,
+    "reliability": 0.0013,
+    "resolution": 0.0735,
+    "uncertainty": 0.1507,
+    "within_bin": -0.001,
+    "reliability_table": [
+     {
+      "bin": "0.0-0.1",
+      "n": 780,
+      "mean_forecast": 0.032,
+      "observed": 0.017
+     },
+     {
+      "bin": "0.1-0.2",
+      "n": 88,
+      "mean_forecast": 0.13,
+      "observed": 0.159
+     },
+     {
+      "bin": "0.2-0.3",
+      "n": 81,
+      "mean_forecast": 0.227,
+      "observed": 0.21
+     },
+     {
+      "bin": "0.3-0.4",
+      "n": 64,
+      "mean_forecast": 0.329,
+      "observed": 0.281
+     },
+     {
+      "bin": "0.4-0.5",
+      "n": 39,
+      "mean_forecast": 0.422,
+      "observed": 0.333
+     },
+     {
+      "bin": "0.5-0.6",
+      "n": 44,
+      "mean_forecast": 0.53,
+      "observed": 0.5
+     },
+     {
+      "bin": "0.6-0.7",
+      "n": 57,
+      "mean_forecast": 0.626,
+      "observed": 0.684
+     },
+     {
+      "bin": "0.7-0.8",
+      "n": 51,
+      "mean_forecast": 0.737,
+      "observed": 0.824
+     },
+     {
+      "bin": "0.8-0.9",
+      "n": 46,
+      "mean_forecast": 0.837,
+      "observed": 0.783
+     },
+     {
+      "bin": "0.9-1.0",
+      "n": 21,
+      "mean_forecast": 0.919,
+      "observed": 1.0
+     }
+    ]
+   },
+   "A3p": {
+    "label": "Agent, no baseline tool",
+    "n": 1271,
+    "log_loss": 0.254,
+    "skill_vs_climatology": 0.425,
+    "brier": 0.0771,
+    "reliability": 0.0028,
+    "resolution": 0.0762,
+    "uncertainty": 0.1507,
+    "within_bin": -0.0002,
+    "reliability_table": [
+     {
+      "bin": "0.0-0.1",
+      "n": 661,
+      "mean_forecast": 0.037,
+      "observed": 0.003
+     },
+     {
+      "bin": "0.1-0.2",
+      "n": 117,
+      "mean_forecast": 0.125,
+      "observed": 0.068
+     },
+     {
+      "bin": "0.2-0.3",
+      "n": 113,
+      "mean_forecast": 0.223,
+      "observed": 0.142
+     },
+     {
+      "bin": "0.3-0.4",
+      "n": 83,
+      "mean_forecast": 0.328,
+      "observed": 0.265
+     },
+     {
+      "bin": "0.4-0.5",
+      "n": 72,
+      "mean_forecast": 0.424,
+      "observed": 0.403
+     },
+     {
+      "bin": "0.5-0.6",
+      "n": 52,
+      "mean_forecast": 0.524,
+      "observed": 0.385
+     },
+     {
+      "bin": "0.6-0.7",
+      "n": 56,
+      "mean_forecast": 0.623,
+      "observed": 0.661
+     },
+     {
+      "bin": "0.7-0.8",
+      "n": 46,
+      "mean_forecast": 0.735,
+      "observed": 0.783
+     },
+     {
+      "bin": "0.8-0.9",
+      "n": 37,
+      "mean_forecast": 0.833,
+      "observed": 0.865
+     },
+     {
+      "bin": "0.9-1.0",
+      "n": 34,
+      "mean_forecast": 0.927,
+      "observed": 0.971
+     }
+    ]
+   },
+   "ssp": {
+    "label": "SSP baseline",
+    "n": 1271,
+    "log_loss": 0.2663,
+    "skill_vs_climatology": 0.388,
+    "brier": 0.0821,
+    "reliability": 0.0029,
+    "resolution": 0.0707,
+    "uncertainty": 0.1507,
+    "within_bin": -0.0008,
+    "reliability_table": [
+     {
+      "bin": "0.0-0.1",
+      "n": 841,
+      "mean_forecast": 0.027,
+      "observed": 0.026
+     },
+     {
+      "bin": "0.1-0.2",
+      "n": 48,
+      "mean_forecast": 0.154,
+      "observed": 0.188
+     },
+     {
+      "bin": "0.2-0.3",
+      "n": 71,
+      "mean_forecast": 0.246,
+      "observed": 0.254
+     },
+     {
+      "bin": "0.3-0.4",
+      "n": 35,
+      "mean_forecast": 0.339,
+      "observed": 0.314
+     },
+     {
+      "bin": "0.4-0.5",
+      "n": 26,
+      "mean_forecast": 0.461,
+      "observed": 0.231
+     },
+     {
+      "bin": "0.5-0.6",
+      "n": 34,
+      "mean_forecast": 0.557,
+      "observed": 0.412
+     },
+     {
+      "bin": "0.6-0.7",
+      "n": 48,
+      "mean_forecast": 0.649,
+      "observed": 0.5
+     },
+     {
+      "bin": "0.7-0.8",
+      "n": 69,
+      "mean_forecast": 0.745,
+      "observed": 0.667
+     },
+     {
+      "bin": "0.8-0.9",
+      "n": 76,
+      "mean_forecast": 0.849,
+      "observed": 0.829
+     },
+     {
+      "bin": "0.9-1.0",
+      "n": 23,
+      "mean_forecast": 0.928,
+      "observed": 0.957
+     }
+    ]
+   },
+   "mos_based": {
+    "label": "MOS-based",
+    "n": 1271,
+    "log_loss": 0.2856,
+    "skill_vs_climatology": 0.341,
+    "brier": 0.0883,
+    "reliability": 0.0028,
+    "resolution": 0.0651,
+    "uncertainty": 0.1507,
+    "within_bin": -0.0001,
+    "reliability_table": [
+     {
+      "bin": "0.0-0.1",
+      "n": 839,
+      "mean_forecast": 0.03,
+      "observed": 0.031
+     },
+     {
+      "bin": "0.1-0.2",
+      "n": 88,
+      "mean_forecast": 0.144,
+      "observed": 0.205
+     },
+     {
+      "bin": "0.2-0.3",
+      "n": 62,
+      "mean_forecast": 0.247,
+      "observed": 0.339
+     },
+     {
+      "bin": "0.3-0.4",
+      "n": 42,
+      "mean_forecast": 0.344,
+      "observed": 0.429
+     },
+     {
+      "bin": "0.4-0.5",
+      "n": 40,
+      "mean_forecast": 0.45,
+      "observed": 0.275
+     },
+     {
+      "bin": "0.5-0.6",
+      "n": 35,
+      "mean_forecast": 0.551,
+      "observed": 0.571
+     },
+     {
+      "bin": "0.6-0.7",
+      "n": 36,
+      "mean_forecast": 0.651,
+      "observed": 0.5
+     },
+     {
+      "bin": "0.7-0.8",
+      "n": 40,
+      "mean_forecast": 0.754,
+      "observed": 0.675
+     },
+     {
+      "bin": "0.8-0.9",
+      "n": 52,
+      "mean_forecast": 0.852,
+      "observed": 0.808
+     },
+     {
+      "bin": "0.9-1.0",
+      "n": 37,
+      "mean_forecast": 0.927,
+      "observed": 0.919
+     }
+    ]
+   },
+   "climatology": {
+    "label": "Climatology",
+    "n": 1271,
+    "log_loss": 0.4289,
+    "skill_vs_climatology": 0.0,
+    "brier": 0.134,
+    "reliability": 0.0015,
+    "resolution": 0.0174,
+    "uncertainty": 0.1507,
+    "within_bin": -0.0007,
+    "reliability_table": [
+     {
+      "bin": "0.0-0.1",
+      "n": 412,
+      "mean_forecast": 0.049,
+      "observed": 0.075
+     },
+     {
+      "bin": "0.1-0.2",
+      "n": 495,
+      "mean_forecast": 0.155,
+      "observed": 0.149
+     },
+     {
+      "bin": "0.2-0.3",
+      "n": 159,
+      "mean_forecast": 0.237,
+      "observed": 0.27
+     },
+     {
+      "bin": "0.3-0.4",
+      "n": 121,
+      "mean_forecast": 0.365,
+      "observed": 0.314
+     },
+     {
+      "bin": "0.4-0.5",
+      "n": 29,
+      "mean_forecast": 0.432,
+      "observed": 0.621
+     },
+     {
+      "bin": "0.5-0.6",
+      "n": 55,
+      "mean_forecast": 0.545,
+      "observed": 0.564
+     }
+    ]
+   }
+  },
+  "by_station": {
+   "ATL": {
+    "n": 130,
+    "A1p": {
+     "brier": 0.1167,
+     "reliability": 0.0058,
+     "resolution": 0.0923,
+     "uncertainty": 0.2036,
+     "within_bin": -0.0005
+    },
+    "ssp": {
+     "brier": 0.1389,
+     "reliability": 0.0139,
+     "resolution": 0.0775,
+     "uncertainty": 0.2036,
+     "within_bin": -0.0011
+    }
+   },
+   "BOS": {
+    "n": 122,
+    "A1p": {
+     "brier": 0.0776,
+     "reliability": 0.0112,
+     "resolution": 0.0658,
+     "uncertainty": 0.1315,
+     "within_bin": 0.0006
+    },
+    "ssp": {
+     "brier": 0.0875,
+     "reliability": 0.0285,
+     "resolution": 0.0711,
+     "uncertainty": 0.1315,
+     "within_bin": -0.0014
+    }
+   },
+   "DEN": {
+    "n": 135,
+    "A1p": {
+     "brier": 0.1098,
+     "reliability": 0.0129,
+     "resolution": 0.0519,
+     "uncertainty": 0.1509,
+     "within_bin": -0.0021
+    },
+    "ssp": {
+     "brier": 0.109,
+     "reliability": 0.0094,
+     "resolution": 0.0493,
+     "uncertainty": 0.1509,
+     "within_bin": -0.002
+    }
+   },
+   "DFW": {
+    "n": 133,
+    "A1p": {
+     "brier": 0.0467,
+     "reliability": 0.0177,
+     "resolution": 0.0338,
+     "uncertainty": 0.0631,
+     "within_bin": -0.0003
+    },
+    "ssp": {
+     "brier": 0.0645,
+     "reliability": 0.0356,
+     "resolution": 0.0339,
+     "uncertainty": 0.0631,
+     "within_bin": -0.0003
+    }
+   },
+   "LAX": {
+    "n": 132,
+    "A1p": {
+     "brier": 0.0108,
+     "reliability": 0.0107,
+     "resolution": 0.0222,
+     "uncertainty": 0.0222,
+     "within_bin": 0.0001
+    },
+    "ssp": {
+     "brier": 0.011,
+     "reliability": 0.0033,
+     "resolution": 0.0146,
+     "uncertainty": 0.0222,
+     "within_bin": 0.0001
+    }
+   },
+   "MIA": {
+    "n": 123,
+    "A1p": {
+     "brier": 0.1566,
+     "reliability": 0.0071,
+     "resolution": 0.0995,
+     "uncertainty": 0.2499,
+     "within_bin": -0.0008
+    },
+    "ssp": {
+     "brier": 0.1594,
+     "reliability": 0.0065,
+     "resolution": 0.0968,
+     "uncertainty": 0.2499,
+     "within_bin": -0.0003
+    }
+   },
+   "NYC": {
+    "n": 117,
+    "A1p": {
+     "brier": 0.0734,
+     "reliability": 0.0058,
+     "resolution": 0.1257,
+     "uncertainty": 0.1948,
+     "within_bin": -0.0015
+    },
+    "ssp": {
+     "brier": 0.0854,
+     "reliability": 0.014,
+     "resolution": 0.1197,
+     "uncertainty": 0.1948,
+     "within_bin": -0.0037
+    }
+   },
+   "ORD": {
+    "n": 124,
+    "A1p": {
+     "brier": 0.0674,
+     "reliability": 0.0136,
+     "resolution": 0.0851,
+     "uncertainty": 0.1407,
+     "within_bin": -0.0018
+    },
+    "ssp": {
+     "brier": 0.07,
+     "reliability": 0.0112,
+     "resolution": 0.0818,
+     "uncertainty": 0.1407,
+     "within_bin": -0.0001
+    }
+   },
+   "PHX": {
+    "n": 129,
+    "A1p": {
+     "brier": 0.0592,
+     "reliability": 0.0164,
+     "resolution": 0.0417,
+     "uncertainty": 0.0844,
+     "within_bin": 0.0002
+    },
+    "ssp": {
+     "brier": 0.0666,
+     "reliability": 0.0211,
+     "resolution": 0.0389,
+     "uncertainty": 0.0844,
+     "within_bin": -0.0
+    }
+   },
+   "SEA": {
+    "n": 126,
+    "A1p": {
+     "brier": 0.0333,
+     "reliability": 0.0158,
+     "resolution": 0.1051,
+     "uncertainty": 0.1224,
+     "within_bin": 0.0002
+    },
+    "ssp": {
+     "brier": 0.0318,
+     "reliability": 0.0076,
+     "resolution": 0.0977,
+     "uncertainty": 0.1224,
+     "within_bin": -0.0006
+    }
+   }
+  }
+ }
+}

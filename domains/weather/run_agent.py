@@ -1,4 +1,4 @@
-"""Run the weather agent (SPEC 5, 9, 10). All spend goes through one ledger with the $30 hard cap.
+"""Run the weather agent (SPEC 5, 9, 10). All spend goes through one ledger with a hard cap (CAP_USD, $55; raised from $30 before the holdout).
 
   python -m domains.weather.run_agent --track temp --system A1 --period dev --n 10 --seed 101 --label pilot
   python -m domains.weather.run_agent --track temp --system A1 --period holdout_primary --all --label holdout

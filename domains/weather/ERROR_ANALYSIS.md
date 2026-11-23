@@ -71,6 +71,15 @@ Fronts and storms are not a failure signal by themselves: the agent mentions the
 - **Chicago, Sep 9, normal 78°F, reached.** SSP 0.94, without 0.85, with **0.40**: the discussion's area-wide statement
   about highs in the 70s was applied to O'Hare.
 
+## Our own tool description primed the failure
+
+Part of the double counting traces to this project's wording, not only to the model. The `statistical_baseline`
+tool tells the agent the baseline is "well calibrated on past data; it cannot read the discussions" (`tools.py`),
+and the temperature prompt describes discussions as explaining what "change[s] the afternoon high"
+(`run_agent.py`). The agent repeated that argument when it overruled the baseline ("the statistical baseline
+cannot read the discussion"). The wording stays as frozen for this holdout; a neutral description is the first
+change to test on new days.
+
 ## What this suggests (to test on new days, not on this spent holdout)
 
 1. Tell the agent that discussions describe an area and mostly restate model guidance; use them only for information
